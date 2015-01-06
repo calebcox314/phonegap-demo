@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="net.appdevdesigns.phonegap-demo" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>PhoneGap Demo</name>
+    <description>A prototype Apache Cordova application that demos saving CanJS models to a local SQLite database.</description>
+    <author href="http://www.appdevdesigns.net">AppDev Designs</author>
+    <content src="index.html" />
+    <access origin="*" />
+    <gap:plugin name="org.apache.cordova.console" />
+    <gap:plugin name="https://github.com/brodysoft/Cordova-SQLitePlugin" />
+</widget>

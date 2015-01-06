@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Phonegap Demo Application</title>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
+    <link rel="stylesheet" type="text/css" href="jquery-mobile/jquery.mobile-1.4.5.css" />
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" data-main="js/app" src="bower_components/requirejs/require.js"></script>
+
+    <script type="text/mustache" id="app-main">
+      <div role="main" class="ui-content">
+        <app-contacts></app-contacts>
+      </div>
+    </script>
+
+    <script type="text/mustache" id="app-contact">
+      <div role="main" class="ui-content">
+        <edit-contact></edit-contact>
+      </div>
+    </script>
+
+    <script type="text/mustache" id="app-contacts">
+      <ul data-role="listview" class="ui-listview" style="margin-bottom: 2em;">
+        <li data-role="list-divider" role="heading">Contacts</li>
+        {{#each contacts}}
+        <li><a href="{{contact-url contact_id}}">{{name}}</li>
+        {{/each}}
+      </ul>
+      <a href="{{contact-url null}}" class="ui-btn ui-corner-all" can-click="create">Create</a>
+      <a class="ui-btn ui-corner-all" can-click="purge">Purge</a>
+    </script>
+
+    <script type="text/mustache" id="edit-contact">
+      <form>
+        <label for="first-name">First name</label>
+        <input type="text" id="first-name" can-value="contact.first_name" can-enter="save" autofocus="">
+        <label for="last-name">Last name</label>
+        <input type="text" id="last-name" can-value="contact.last_name" can-enter="save">
+        <label for="email-address">Email address</label>
+        <input type="email" id="email-address" can-value="contact.email_address" can-enter="save">
+        <label for="phone-number">Phone number</label>
+        <input type="tel" id="phone-number" can-value="contact.phone_number" can-enter="save">
+      </form>
+      <button class="ui-btn ui-corner-all" can-click="save">Save</button>
+      <button class="ui-btn ui-corner-all" can-click="cancel">Cancel</button>
+    </script>
+  </head>
+  <body>
+    <div data-role="page" id="main">
+      <div data-role="header">
+        <h3>Phonegap Demo</h3>
+      </div>
+      <div id="app"></div>
+    </div>
+
+    <div data-role="page" id="contact">
+      <div data-role="header">
+        <h3>Edit Contact</h3>
+      </div>
+      <div id="edit-contact"></div>
+    </div>
+  </body>
+</html>
