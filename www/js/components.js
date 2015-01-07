@@ -24,8 +24,6 @@ define(function(require) {
       refresh();
     },
     scope: {
-      create: function(context) {
-      },
       purge: function(context) {
         // Delete all contacts in series
         var promise = can.Deferred().resolve();
