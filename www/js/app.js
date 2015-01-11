@@ -16,6 +16,9 @@ require.config({
 define(function(require) {
   var $ = require('jquery');
   var jqm = require('jquery-mobile');
+  var can = require('can');
+  // Load the CanJS proxy plugin
+  require('can/construct/proxy');
   var Components = require('components');
   var Models = require('models');
 
