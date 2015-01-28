@@ -1,4 +1,6 @@
 define(function(require) {
+  'use strict';
+
   // Load the CanJS and the required plugins
   var can = require('can');
   require('can/construct/super');

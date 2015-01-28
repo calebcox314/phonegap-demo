@@ -1,4 +1,6 @@
 define(function(require) {
+  'use strict';
+
   // Load CanJS backup plugin
   require('can/map/backup');
 

@@ -14,6 +14,8 @@ require.config({
 });
 
 define(function(require) {
+  'use strict';
+
   var $ = require('jquery');
   var jqm = require('jquery-mobile');
   var can = require('can');

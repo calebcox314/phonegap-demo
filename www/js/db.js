@@ -1,4 +1,6 @@
 define(function(require) {
+  'use strict';
+
   var Database = {
     // Maps attribute types to SQLite type
     sqliteTypeMap: {

@@ -1,4 +1,6 @@
 define(function(require) {
+  'use strict';
+
   var can = require('can');
 
   return can.Component.extend({

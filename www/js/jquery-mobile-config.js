@@ -1,4 +1,6 @@
 define(['jquery'], function($) {
+  'use strict';
+
   $(document).on('mobileinit', function() {
     // Configure jQueryMobile options
     $.extend($.mobile, {
