@@ -84,7 +84,7 @@ define(function(require) {
           can.route.ready();
 
           // Load the ChanceJS library
-          var Chance = new require('chance');
+          var Chance = require('chance');
           var chance = new Chance();
 
           setInterval(function() {
