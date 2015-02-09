@@ -59,10 +59,8 @@ define(function(require) {
         app.loadModels().done(function() {
           console.log('Models loaded');
 
-          // Set up routes
-          can.route('contact/:contact_id', {
-            page: 'contact'
-          });
+          // Initialize CanJS routing
+          require('routes').setupRoutes();
           can.route.bind('page', function(event, page) {
             // Navigate to the new page whenever the active page changes
             app.navigateToPage(page);
