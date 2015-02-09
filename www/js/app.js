@@ -2,7 +2,7 @@
 require.config({
   paths: {
     'jquery': '../bower_components/jquery/jquery',
-    'jquery-mobile': '../jquery-mobile/jquery.mobile-1.4.5',
+    'jquery-mobile': '../bower_components/jquery-mobile/jquery.mobile-1.4.5',
     'can': '../bower_components/canjs/amd/can',
     'chance': '../bower_components/chance/chance'
   },
