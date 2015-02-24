@@ -21,7 +21,7 @@ define(function(require) {
   var can = require('can');
   // Load the CanJS proxy plugin
   require('can/construct/proxy');
-  var Components = require('components');
+  var Controls = require('controls');
   var Models = require('models');
 
   var app = {
@@ -66,9 +66,9 @@ define(function(require) {
             app.navigateToPage(page);
           });
 
-          // Render the main application template
-          $('div#app').append(can.view('app-main', {}));
-          $('div#edit-contact').append(can.view('app-contact', {}));
+          // Create all application control instances
+          var contactsControl = new Controls.Contacts('[data-control=contacts]', {});
+          var editContactControl = new Controls.EditContact('[data-control=edit-contact]', {});
 
           // Links with a data-rel="back" attribute function as "back" buttons
           $('body').on('click', 'a[data-rel=back]', function() {

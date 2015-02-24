@@ -9,42 +9,30 @@
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" data-main="js/app" src="bower_components/requirejs/require.js"></script>
 
-    <script type="text/mustache" id="app-main">
-      <div role="main" class="ui-content">
-        <app-contacts></app-contacts>
-      </div>
-    </script>
-
-    <script type="text/mustache" id="app-contact">
-      <div role="main" class="ui-content">
-        <edit-contact></edit-contact>
-      </div>
-    </script>
-
     <script type="text/mustache" id="app-contacts">
       <ul data-role="listview" class="ui-listview" style="margin-bottom: 2em;">
         <li data-role="list-divider" role="heading">Contacts</li>
         {{#each contacts}}
-        <li><a href="{{contact-url contact_id}}">{{name}}</li>
+        <li class="contact" data-id="{{contact_id}}"><a>{{name}}</a></li>
         {{/each}}
       </ul>
-      <a href="{{contact-url null}}" class="ui-btn ui-corner-all">Create</a>
-      <a class="ui-btn ui-corner-all" can-click="purge">Purge</a>
+      <button class="ui-btn ui-corner-all create">Create</button>
+      <button class="ui-btn ui-corner-all purge">Purge</button>
     </script>
 
     <script type="text/mustache" id="edit-contact">
       <form>
         <label for="first-name">First name</label>
-        <input type="text" id="first-name" can-value="contact.first_name" can-enter="save" autofocus="">
+        <input type="text" id="first-name" can-value="contact.first_name" autofocus>
         <label for="last-name">Last name</label>
-        <input type="text" id="last-name" can-value="contact.last_name" can-enter="save">
+        <input type="text" id="last-name" can-value="contact.last_name">
         <label for="email-address">Email address</label>
-        <input type="email" id="email-address" can-value="contact.email_address" can-enter="save">
+        <input type="email" id="email-address" can-value="contact.email_address">
         <label for="phone-number">Phone number</label>
-        <input type="tel" id="phone-number" can-value="contact.phone_number" can-enter="save">
+        <input type="tel" id="phone-number" can-value="contact.phone_number">
+        <button class="ui-btn ui-corner-all save" type="submit">Save</button>
+        <button class="ui-btn ui-corner-all cancel">Cancel</button>
       </form>
-      <button class="ui-btn ui-corner-all" can-click="save">Save</button>
-      <button class="ui-btn ui-corner-all" can-click="cancel">Cancel</button>
     </script>
   </head>
   <body>
@@ -52,14 +40,14 @@
       <div data-role="header">
         <h3>Phonegap Demo</h3>
       </div>
-      <div id="app"></div>
+      <div role="main" data-control="contacts" class="ui-content"></div>
     </div>
 
     <div data-role="page" id="contact">
       <div data-role="header">
         <h3>Edit Contact</h3>
       </div>
-      <div id="edit-contact"></div>
+      <div data-control="edit-contact" class="ui-content"></div>
     </div>
   </body>
 </html>
