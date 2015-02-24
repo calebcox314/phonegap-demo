@@ -3,6 +3,7 @@ define(function(require) {
 
   var can = require('can');
 
+  var models = require('models');
   return can.Component.extend({
     tag: 'edit-contact',
     template: can.view('edit-contact'),
@@ -27,10 +28,10 @@ define(function(require) {
         }
         var contact = null;
         if (contact_id === 'new') {
-          contact = new Contact();
+          contact = new models.Contact();
         }
         else {
-          contact = Contact.store[contact_id];
+          contact = models.Contact.store[contact_id];
           contact.backup();
         }
         this.scope.attr('contact', contact);
