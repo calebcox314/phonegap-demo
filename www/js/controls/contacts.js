@@ -24,7 +24,7 @@ define(function(require) {
       this.element.html(fragment);
 
       // Initialize the jQueryMobile listview component
-      this.$listview = $(element).find('ul');
+      this.$listview = element.find('ul');
       this.$listview.listview();
 
       // Refresh the contacts UI list whenever contacts are added or removed
