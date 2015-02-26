@@ -10,7 +10,13 @@ define(function(require) {
       first_name: 'string',
       last_name: 'string',
       email_address: 'string',
-      phone_number: 'string',
+      phone_number: 'string'
+    },
+    defaults: {
+      first_name: '',
+      last_name: '',
+      email_address: null,
+      phone_number: null
     }
   }, {
     name: can.compute(function() {
