@@ -9,7 +9,10 @@ define(function(require) {
      */
     setupRoutes: function() {
       var can = require('can');
-      can.route('contact/:contact_id', {
+      can.route('contacts', {
+        page: 'contacts'
+      });
+      can.route('contacts/:contact_id', {
         page: 'contact'
       });
     }

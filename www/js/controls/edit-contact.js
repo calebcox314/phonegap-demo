@@ -52,14 +52,14 @@ define(function(require) {
      */
     '.save click': function() {
       this.saveContact();
-      location.hash = can.route.url({});
+      location.hash = can.route.url({ page: 'contacts' });
 
       // Prevent the default submit behavior
       return false;
     },
     '.cancel click': function() {
       this.revertContact();
-      location.hash = can.route.url({});
+      location.hash = can.route.url({ page: 'contacts' });
     },
 
     /*

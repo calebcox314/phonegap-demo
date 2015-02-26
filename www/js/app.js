@@ -81,6 +81,11 @@ define(function(require) {
           // This will load the initial page, and therefore must be called after jQuery Mobile has been initialized
           can.route.ready();
 
+          if (!can.route.attr('page')) {
+            // Load the initial page
+            location.hash = can.route.url({ page: 'contacts' });
+          }
+
           console.log('Finished initialization');
         }).fail(function() {
           console.error('Failed to load models!');
@@ -91,7 +96,7 @@ define(function(require) {
     },
 
     navigateToPage: function(pageId) {
-      $(':mobile-pagecontainer').pagecontainer('change', '#' + (pageId || 'main'), { changeHash: false });
+      $(':mobile-pagecontainer').pagecontainer('change', '#' + pageId, { changeHash: false });
     }
   };
 
