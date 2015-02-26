@@ -81,21 +81,6 @@ define(function(require) {
           // This will load the initial page, and therefore must be called after jQuery Mobile has been initialized
           can.route.ready();
 
-          // Load the ChanceJS library
-          var Chance = require('chance');
-          var chance = new Chance();
-
-          setInterval(function() {
-            var nameParts = chance.name().split(' ');
-            var contact = new Contact({
-              first_name: nameParts[0],
-              last_name: nameParts[1],
-              email_address: nameParts.join('.').toLowerCase() + '@gmail.com',
-              phone_number: chance.phone()
-            });
-            contact.save();
-          }, 5000);
-
           console.log('Finished initialization');
         }).fail(function() {
           console.error('Failed to load models!');

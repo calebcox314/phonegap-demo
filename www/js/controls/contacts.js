@@ -4,6 +4,10 @@ define(function(require) {
   var $ = require('jquery');
   var can = require('can');
 
+  // Load the ChanceJS library and instantiate a new chance generator instance
+  var Chance = require('chance');
+  var chance = new Chance();
+
   var models = require('models');
   return can.Control.extend({
     // Initialize the control
@@ -36,6 +40,17 @@ define(function(require) {
     '.create click': function() {
       // Start editing a new contact
       this.openContact(null);
+    },
+    '.generate click': function() {
+      // Generate a new contact with randomly generated data
+      var nameParts = chance.name().split(' ');
+      var contact = new Contact({
+        first_name: nameParts[0],
+        last_name: nameParts[1],
+        email_address: nameParts.join('.').toLowerCase() + '@gmail.com',
+        phone_number: chance.phone()
+      });
+      contact.save();
     },
     '.purge click': function() {
       // Delete all contacts in series
