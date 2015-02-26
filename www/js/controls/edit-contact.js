@@ -12,8 +12,9 @@ define(function(require) {
         contact: null
       });
 
-      // Render the control using the contact
-      this.element.append(can.view('edit-contact', this.scope));
+      // Render the control using the contact and insert it into the control's DOM element
+      var fragment = can.view('edit-contact', this.scope);
+      this.element.html(fragment);
     },
 
     /*

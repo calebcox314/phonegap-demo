@@ -15,8 +15,9 @@ define(function(require) {
       this.scope = new can.Map({
         contacts: contacts
       });
-      // Render the control using the contact list
-      this.element.html(can.view('app-contacts', this.scope));
+      // Render the control using the contact list and insert it into the control's DOM element
+      var fragment = can.view('app-contacts', this.scope);
+      this.element.html(fragment);
 
       // Initialize the jQueryMobile listview component
       this.$listview = $(element).find('ul');
