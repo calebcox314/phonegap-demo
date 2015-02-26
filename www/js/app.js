@@ -70,11 +70,6 @@ define(function(require) {
           var contactsControl = new Controls.Contacts('[data-control=contacts]', {});
           var editContactControl = new Controls.EditContact('[data-control=edit-contact]', {});
 
-          // Links with a data-rel="back" attribute function as "back" buttons
-          $('body').on('click', 'a[data-rel=back]', function() {
-            window.history.back();
-          });
-
           // Initialize the jQuery Mobile widgets
           $.mobile.initializePage();
 
