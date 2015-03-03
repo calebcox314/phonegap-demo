@@ -12,7 +12,7 @@ define(function(require) {
       can.route('contacts', {
         page: 'contacts'
       });
-      can.route('contacts/:contact_id', {
+      can.route('contacts/:contactId', {
         page: 'contact'
       });
     }

@@ -63,28 +63,28 @@ define(function(require) {
     },
 
     /*
-     * Listen for changes to the route's "contact_id" attribute.
+     * Listen for changes to the route's "contactId" attribute.
      */
-    '{can.route} contact_id': function(route, event, contact_id) {
+    '{can.route} contactId': function(route, event, contactId) {
       var contact = null;
-      if (contact_id === undefined) {
-        // Ignore the contact_id if it is undefined
+      if (contactId === undefined) {
+        // Ignore the contactId if it is undefined
       }
-      else if (contact_id === 'new') {
+      else if (contactId === 'new') {
         // Create a new contact to edit
         contact = new models.Contact();
       }
       else {
         // Lookup the contact in the global list by its contact
-        contact = models.Contact.store[contact_id];
+        contact = models.Contact.store[contactId];
         if (contact) {
           // Save a copy of the contact's attributes so that it can be reverted later if necessary
           contact.backup();
         }
         else {
-          // No contact has that contact_id
+          // No contact has that contactId
           console.error('Attempting to navigate to a non-existent contact!');
-          can.route.removeAttr('contact_id');
+          can.route.removeAttr('contactId');
         }
       }
       this.setContact(contact);

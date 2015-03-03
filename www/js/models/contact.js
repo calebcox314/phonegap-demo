@@ -5,22 +5,22 @@ define(function(require) {
   var LocalModel = require('local-model');
 
   return LocalModel.extend('Contact', {
-    id: 'contact_id',
+    id: 'contactId',
     attributes: {
-      first_name: 'string',
-      last_name: 'string',
-      email_address: 'string',
-      phone_number: 'string'
+      firstName: 'string',
+      lastName: 'string',
+      emailAddress: 'string',
+      phoneNumber: 'string'
     },
     defaults: {
-      first_name: '',
-      last_name: '',
-      email_address: null,
-      phone_number: null
+      firstName: '',
+      lastName: '',
+      emailAddress: null,
+      phoneNumber: null
     }
   }, {
     name: can.compute(function() {
-      return this.attr('first_name') + ' ' + this.attr('last_name');
+      return this.attr('firstName') + ' ' + this.attr('lastName');
     })
   });
 });

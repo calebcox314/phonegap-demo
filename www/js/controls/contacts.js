@@ -45,10 +45,10 @@ define(function(require) {
       // Generate a new contact with randomly generated data
       var nameParts = chance.name().split(' ');
       var contact = new Contact({
-        first_name: nameParts[0],
-        last_name: nameParts[1],
-        email_address: nameParts.join('.').toLowerCase() + '@gmail.com',
-        phone_number: chance.phone()
+        firstName: nameParts[0],
+        lastName: nameParts[1],
+        emailAddress: nameParts.join('.').toLowerCase() + '@gmail.com',
+        phoneNumber: chance.phone()
       });
       contact.save();
     },
@@ -63,22 +63,22 @@ define(function(require) {
     },
     '.contact click': function(element) {
       // The contact's id is stored in the data-id attribute on the .contact element
-      var contact_id = $(element).data('id');
+      var contactId = $(element).data('id');
       // Start editing the clicked contact
-      this.openContact(contact_id);
+      this.openContact(contactId);
     },
 
     /*
      * Navigate to a specific contact in the UI.
      *
-     * @param contact_id {number} The contact_id of the contact to navigate to (can be null to navigate to a newly-created contact).
+     * @param contactId {number} The contactId of the contact to navigate to (can be null to navigate to a newly-created contact).
      */
-    openContact: function(contact_id) {
+    openContact: function(contactId) {
       // Set the route's "page" attribute to navigate to the edit contact page
-      // and the "contact_id" attribute to specify which contact to navigate to
+      // and the "contactId" attribute to specify which contact to navigate to
       can.route.attr({
         page: 'contact',
-        contact_id: contact_id === null ? 'new' : contact_id
+        contactId: contactId === null ? 'new' : contactId
       });
     },
 
