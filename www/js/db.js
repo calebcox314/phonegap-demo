@@ -69,7 +69,7 @@ define(function(require) {
           fields.push(key);
           placeholders.push('?');
         });
-        var valuesClause = ' ('+ fields.join(',') + ') VALUES ('+ placeholders.join(',') + ')';
+        var valuesClause = ' (' + fields.join(',') + ') VALUES (' + placeholders.join(',') + ')';
         tx.executeSql('INSERT INTO ' + tableData.name + (fields.length === 0 ? ' DEFAULT VALUES' : valuesClause), values, function(tx, result) {
           deferred.resolve(result.insertId);
         }, deferred.reject);
