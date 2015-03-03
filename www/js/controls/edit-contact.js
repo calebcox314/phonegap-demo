@@ -69,6 +69,7 @@ define(function(require) {
       var contact = null;
       if (contactId === undefined) {
         // Ignore the contactId if it is undefined
+        return;
       }
       else if (contactId === 'new') {
         // Create a new contact to edit
