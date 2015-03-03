@@ -3,6 +3,7 @@ define(function(require) {
 
   var Database = {
     // Maps attribute types to SQLite type
+    // jscs:disable disallowQuotedKeysInObjects
     sqliteTypeMap: {
       'primarykey': 'INTEGER PRIMARY KEY AUTOINCREMENT',
       'string': 'TEXT',
@@ -10,6 +11,7 @@ define(function(require) {
       'float': 'REAL',
       'default': 'TEXT'
     },
+    // jscs:enable disallowQuotedKeysInObjects
 
     init: function() {
       var openDatabase = cordova.platformId === 'browser' ? window.openDatabase : window.sqlitePlugin.openDatabase;

@@ -1,4 +1,5 @@
 // Configure Require.JS
+// jscs:disable disallowQuotedKeysInObjects
 require.config({
   paths: {
     'jquery': '../bower_components/jquery/jquery',
@@ -12,6 +13,7 @@ require.config({
     }
   }
 });
+// jscs:enable disallowQuotedKeysInObjects
 
 define(function(require) {
   'use strict';
