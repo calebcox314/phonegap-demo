@@ -3,6 +3,7 @@ define(function(require) {
 
   var Database = {
     // Maps attribute types to SQLite type
+    // jscs:disable disallowQuotedKeysInObjects
     sqliteTypeMap: {
       'primarykey': 'INTEGER PRIMARY KEY AUTOINCREMENT',
       'string': 'TEXT',
@@ -10,6 +11,7 @@ define(function(require) {
       'float': 'REAL',
       'default': 'TEXT'
     },
+    // jscs:enable disallowQuotedKeysInObjects
 
     init: function() {
       var openDatabase = cordova.platformId === 'browser' ? window.openDatabase : window.sqlitePlugin.openDatabase;
@@ -18,11 +20,11 @@ define(function(require) {
 
     install: function(tableData) {
       var deferred = can.Deferred();
-      var self = this;
+      var _this = this;
       this.transaction(function(tx) {
         var columns = [];
         can.each(tableData.attributes, function(type, name) {
-          columns.push(name + ' ' + (self.sqliteTypeMap[type] || self.sqliteTypeMap.default));
+          columns.push(name + ' ' + (_this.sqliteTypeMap[type] || _this.sqliteTypeMap.default));
         });
         tx.executeSql('CREATE TABLE IF NOT EXISTS ' + tableData.name + ' (' + columns.join(', ') + ')', [], function(tx, result) {
           deferred.resolve(null);
@@ -67,7 +69,7 @@ define(function(require) {
           fields.push(key);
           placeholders.push('?');
         });
-        var valuesClause = ' ('+ fields.join(',') + ') VALUES ('+ placeholders.join(',') + ')';
+        var valuesClause = ' (' + fields.join(',') + ') VALUES (' + placeholders.join(',') + ')';
         tx.executeSql('INSERT INTO ' + tableData.name + (fields.length === 0 ? ' DEFAULT VALUES' : valuesClause), values, function(tx, result) {
           deferred.resolve(result.insertId);
         }, deferred.reject);
