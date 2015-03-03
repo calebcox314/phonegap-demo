@@ -18,11 +18,11 @@ define(function(require) {
 
     install: function(tableData) {
       var deferred = can.Deferred();
-      var self = this;
+      var _this = this;
       this.transaction(function(tx) {
         var columns = [];
         can.each(tableData.attributes, function(type, name) {
-          columns.push(name + ' ' + (self.sqliteTypeMap[type] || self.sqliteTypeMap.default));
+          columns.push(name + ' ' + (_this.sqliteTypeMap[type] || _this.sqliteTypeMap.default));
         });
         tx.executeSql('CREATE TABLE IF NOT EXISTS ' + tableData.name + ' (' + columns.join(', ') + ')', [], function(tx, result) {
           deferred.resolve(null);
