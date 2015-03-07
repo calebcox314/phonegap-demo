@@ -1,9 +1,9 @@
 /*
- * Export a singleton that manages all CanJS routes for the application.
+ * Export a singleton that manages all navigation for the application.
  */
 
 define(function(require) {
-  var Routes = {
+  var Navigator = {
     /*
      * Create all CanJS routes. All routes should be centrally located and defined here.
      */
@@ -18,6 +18,6 @@ define(function(require) {
     }
   };
 
-  // Export the Routes singleton
-  return Routes;
+  // Export the Navigator singleton
+  return Navigator;
 });
