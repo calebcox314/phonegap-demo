@@ -2,6 +2,7 @@ define(function(require) {
   'use strict';
 
   var can = require('can');
+  var Navigator = require('navigator');
 
   var models = require('models');
   return can.Control.extend({
@@ -52,14 +53,14 @@ define(function(require) {
      */
     '.save click': function() {
       this.saveContact();
-      location.hash = can.route.url({ page: 'contacts' });
+      Navigator.openPage('contacts');
 
       // Prevent the default submit behavior
       return false;
     },
     '.cancel click': function() {
       this.revertContact();
-      location.hash = can.route.url({ page: 'contacts' });
+      Navigator.openPage('contacts');
     },
 
     /*
@@ -85,7 +86,7 @@ define(function(require) {
         else {
           // No contact has that contactId
           console.error('Attempting to navigate to a non-existent contact!');
-          can.route.removeAttr('contactId');
+          Navigator.openPage('contacts');
         }
       }
       this.setContact(contact);

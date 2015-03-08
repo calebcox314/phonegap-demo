@@ -61,13 +61,6 @@ define(function(require) {
         app.loadModels().done(function() {
           console.log('Models loaded');
 
-          // Initialize CanJS routing
-          require('navigator').setupRoutes();
-          can.route.bind('page', function(event, page) {
-            // Navigate to the new page whenever the active page changes
-            app.navigateToPage(page);
-          });
-
           // Create all application control instances
           var contactsControl = new Controls.Contacts('[data-control=contacts]', {});
           var editContactControl = new Controls.EditContact('[data-control=edit-contact]', {});
@@ -75,13 +68,9 @@ define(function(require) {
           // Initialize the jQuery Mobile widgets
           $.mobile.initializePage();
 
-          // This will load the initial page, and therefore must be called after jQuery Mobile has been initialized
-          can.route.ready();
-
-          if (!can.route.attr('page')) {
-            // Load the initial page
-            location.hash = can.route.url({ page: 'contacts' });
-          }
+          // Load and activate the Navigator, which will setup routing and load the initial page
+          var Navigator = require('navigator');
+          Navigator.activate('contacts');
 
           console.log('Finished initialization');
         }).fail(function() {
@@ -90,10 +79,6 @@ define(function(require) {
       }).fail(function() {
         console.error('Failed to install models!');
       });
-    },
-
-    navigateToPage: function(pageId) {
-      $(':mobile-pagecontainer').pagecontainer('change', '#' + pageId, { changeHash: false });
     }
   };
 
