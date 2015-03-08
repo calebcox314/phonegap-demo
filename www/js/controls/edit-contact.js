@@ -67,12 +67,13 @@ define(function(require) {
      * Listen for changes to the route's "contactId" attribute.
      */
     '{can.route} contactId': function(route, event, contactId) {
-      var contact = null;
-      if (contactId === undefined) {
-        // Ignore the contactId if it is undefined
+      if (Navigator.getOpenPage() !== 'contact') {
+        // Ignore since this page is not open
         return;
       }
-      else if (contactId === 'new') {
+
+      var contact = null;
+      if (contactId === 'new') {
         // Create a new contact to edit
         contact = new models.Contact();
       }

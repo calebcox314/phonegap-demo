@@ -66,6 +66,15 @@ define(function(require) {
       // Calculate the new URL based on the route attributes, then navigate to it
       var newUrl = can.route.url(routeAttrs);
       window.location = newUrl;
+    },
+
+    /*
+     * Return the name of the current open page.
+     *
+     * @returns {string}
+     */
+    getOpenPage: function() {
+      return can.route.attr('page');
     }
   };
 
