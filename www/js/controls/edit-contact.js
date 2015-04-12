@@ -5,7 +5,7 @@ define(function(require) {
   var Navigator = require('navigator');
 
   var models = require('models');
-  return can.Control.extend({
+  return can.Control.extend('EditContact', {
     // Initialize the control
     init: function(element) {
       // This data will be available to the template
@@ -53,14 +53,14 @@ define(function(require) {
      */
     '.save click': function() {
       this.saveContact();
-      Navigator.openPage('contacts');
+      Navigator.openParentPage();
 
       // Prevent the default submit behavior
       return false;
     },
     '.cancel click': function() {
       this.revertContact();
-      Navigator.openPage('contacts');
+      Navigator.openParentPage();
     },
 
     /*
@@ -87,7 +87,7 @@ define(function(require) {
         else {
           // No contact has that contactId
           console.error('Attempting to navigate to a non-existent contact!');
-          Navigator.openPage('contacts');
+          Navigator.openParentPage();
         }
       }
       this.setContact(contact);
