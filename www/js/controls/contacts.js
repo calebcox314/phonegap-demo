@@ -10,7 +10,7 @@ define(function(require) {
   var chance = new Chance();
 
   var models = require('models');
-  return can.Control.extend({
+  return can.Control.extend('Contacts', {
     // Initialize the control
     init: function(element) {
       // Get the global list of all contact models
