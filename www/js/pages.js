@@ -2,41 +2,44 @@ define(function(require) {
   'use strict';
 
   /*
-   * A page consists of a control and routing data
+   * A Pages instance represents all of the pages in an application. Each page consists of a control and routing data.
    */
 
   var can = require('can');
   var Controls = require('controls');
   var Navigator = require('navigator');
-  var Pages = {
-    // Define all pages used within the application
-    pages: {
-      Contacts: {
-        id: 'contacts',
-        Control: Controls.Contacts
-      },
-      EditContact: {
-        id: 'contact',
-        parent: 'contacts',
-        route: ':contactId',
-        Control: Controls.EditContact
-      }
+  var Pages = can.Construct.extend({
+    pages: null,
+
+    /* Pages constructor
+     *
+     * The elements of the pages array are dictionaries with the following keys:
+     *   id:      The page's arbitrary unique id
+     *   parent:  The page's parent's id (optional; omit for root pages)
+     *   route:   The page's CanJS route pattern (optional; defaults to page's id)
+     *   Control: The page's associated can.Control class
+     *
+     * @param {array} pages Array of all the application's pages
+     */
+    init: function(pages) {
+      this.pages = pages;
     },
 
     // Create the controls associated with the pages
     createControls: function() {
-      can.each(this.pages, function(page, key) {
-        page.control = new page.Control('[data-control=' + can.hyphenate(page.Control.fullName).toLowerCase() + ']', {});
+      this.pages.forEach(function(page) {
+        var controlName = can.hyphenate(page.Control.fullName).toLowerCase();
+        page.control = new page.Control('[data-control=' + controlName + ']', {});
       });
     },
 
     // Register all pages with the Navigator component
     registerPages: function() {
-      can.each(this.pages, function(page, key) {
+      this.pages.forEach(function(page) {
         Navigator.registerPage(page.id, page.parent || null, page.route);
       });
     }
-  };
+  });
 
   return Pages;
 });

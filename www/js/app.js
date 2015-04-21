@@ -62,15 +62,29 @@ define(function(require) {
         app.loadModels().done(function() {
           console.log('Models loaded');
 
+          // Define all pages used within the application
+          var pages = new Pages([
+            {
+              id: 'contacts',
+              Control: Controls.Contacts
+            },
+            {
+              id: 'contact',
+              parent: 'contacts',
+              route: ':contactId',
+              Control: Controls.EditContact
+            }
+          ]);
+
           // Create all application control instances
-          Pages.createControls();
+          pages.createControls();
 
           // Initialize the jQuery Mobile widgets
           $.mobile.initializePage();
 
           // Load and activate the Navigator, which will setup routing and load the initial page
           var Navigator = require('navigator');
-          Pages.registerPages();
+          pages.registerPages();
           Navigator.activate('contacts');
 
           console.log('Finished initialization');
