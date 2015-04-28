@@ -22,7 +22,15 @@ define(function(require) {
     parentId: null,
     // The route attribute that this control will bind to
     // It may be overriden in derived page controls
-    routeAttr: null
+    routeAttr: null,
+
+    // Register derived page controls with the Navigator component
+    extend: function() {
+      // Call the original extend function
+      var PageControl = this._super.apply(this, arguments);
+      Navigator.registerPage(PageControl.pageId, PageControl.parentId, PageControl.routeAttr ? ':' + PageControl.routeAttr : null);
+      return PageControl;
+    }
   }, {
     // Initialize the control
     init: function(element) {

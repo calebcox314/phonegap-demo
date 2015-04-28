@@ -24,7 +24,6 @@ define(function(require) {
   // Load the CanJS proxy plugin
   require('can/construct/proxy');
   var Controls = require('controls');
-  var Pages = require('pages');
   var Models = require('models');
 
   var app = {
@@ -62,18 +61,17 @@ define(function(require) {
         app.loadModels().done(function() {
           console.log('Models loaded');
 
-          // Define all pages used within the application
-          var pages = new Pages([Controls.Contacts, Controls.EditContact]);
-
           // Create all application control instances
-          pages.createControls();
+          [Controls.Contacts, Controls.EditContact].forEach(function(Control) {
+            var controlName = can.hyphenate(Control.fullName).toLowerCase();
+            var control = new Control('[data-control=' + controlName + ']', {});
+          });
 
           // Initialize the jQuery Mobile widgets
           $.mobile.initializePage();
 
           // Load and activate the Navigator, which will setup routing and load the initial page
           var Navigator = require('navigator');
-          pages.registerPages();
           Navigator.activate('contacts');
 
           console.log('Finished initialization');
