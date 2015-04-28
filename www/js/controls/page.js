@@ -14,9 +14,14 @@ define(function(require) {
   var Navigator = require('navigator');
 
   var Page = can.Control.extend({
-    // The unique id of this page, which SHOULD be overriden in derived page controls
+    // The unique id of this page
+    // It should always be overriden in derived page controls
     pageId: null,
-    // The route attribute that this control will bind to, which MAY be overriden in derived page controls
+    // The id of this page's parent in the navigation heirarchy
+    // It shoud be overriden in derived page controls unless the page is a root page
+    parentId: null,
+    // The route attribute that this control will bind to
+    // It may be overriden in derived page controls
     routeAttr: null
   }, {
     // Initialize the control

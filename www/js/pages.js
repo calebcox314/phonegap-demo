@@ -27,16 +27,16 @@ define(function(require) {
 
     // Create the controls associated with the pages
     createControls: function() {
-      this.pages.forEach(function(page) {
-        var controlName = can.hyphenate(page.Control.fullName).toLowerCase();
-        page.control = new page.Control('[data-control=' + controlName + ']', {});
+      this.pages.forEach(function(Page) {
+        var controlName = can.hyphenate(Page.fullName).toLowerCase();
+        var control = new Page('[data-control=' + controlName + ']', {});
       });
     },
 
     // Register all pages with the Navigator component
     registerPages: function() {
-      this.pages.forEach(function(page) {
-        Navigator.registerPage(page.id, page.parent || null, page.route);
+      this.pages.forEach(function(Page) {
+        Navigator.registerPage(Page.pageId, Page.parentId, Page.routeAttr ? ':' + Page.routeAttr : null);
       });
     }
   });

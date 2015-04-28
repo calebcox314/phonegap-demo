@@ -63,18 +63,7 @@ define(function(require) {
           console.log('Models loaded');
 
           // Define all pages used within the application
-          var pages = new Pages([
-            {
-              id: 'contacts',
-              Control: Controls.Contacts
-            },
-            {
-              id: 'contact',
-              parent: 'contacts',
-              route: ':contactId',
-              Control: Controls.EditContact
-            }
-          ]);
+          var pages = new Pages([Controls.Contacts, Controls.EditContact]);
 
           // Create all application control instances
           pages.createControls();

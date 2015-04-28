@@ -8,6 +8,7 @@ define(function(require) {
   var models = require('models');
   return Page.extend('EditContact', {
     pageId: 'contact',
+    parentId: 'contacts',
     routeAttr: 'contactId'
   }, {
     // Initialize the control
