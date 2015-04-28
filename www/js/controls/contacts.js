@@ -3,6 +3,7 @@ define(function(require) {
 
   var $ = require('jquery');
   var can = require('can');
+  var Page = require('controls/page');
   var Navigator = require('navigator');
 
   // Load the ChanceJS library and instantiate a new chance generator instance
@@ -10,9 +11,14 @@ define(function(require) {
   var chance = new Chance();
 
   var models = require('models');
-  return can.Control.extend('Contacts', {
+  return Page.extend('Contacts', {
+    pageId: 'contacts'
+  }, {
     // Initialize the control
     init: function(element) {
+      // Call the Page constructor
+      this._super.apply(this, arguments);
+
       // Get the global list of all contact models
       var contacts = this.contacts = models.Contact.list;
 

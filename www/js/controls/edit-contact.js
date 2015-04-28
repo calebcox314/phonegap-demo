@@ -2,12 +2,22 @@ define(function(require) {
   'use strict';
 
   var can = require('can');
+  var Page = require('controls/page');
   var Navigator = require('navigator');
 
   var models = require('models');
-  return can.Control.extend('EditContact', {
+  return Page.extend('EditContact', {
+    pageId: 'contact',
+    routeAttr: 'contactId'
+  }, {
     // Initialize the control
     init: function(element) {
+      // Call the Page constructor
+      this._super.apply(this, arguments);
+
+      // Listen for changes to the route
+      this.on('route.change', this.proxy('routeChange'));
+
       // This data will be available to the template
       this.scope = new can.Map({
         contact: null
@@ -64,14 +74,9 @@ define(function(require) {
     },
 
     /*
-     * Listen for changes to the route's "contactId" attribute.
+     * Listen for changes to the page's registered route attribute, "contactId" in this case.
      */
-    '{can.route} contactId': function(route, event, contactId) {
-      if (Navigator.getOpenPage() !== 'contact') {
-        // Ignore since this page is not open
-        return;
-      }
-
+    routeChange: function(event, contactId) {
       var contact = null;
       if (contactId === 'new') {
         // Create a new contact to edit
