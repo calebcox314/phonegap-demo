@@ -53,7 +53,7 @@ define(function(require) {
     '.generate click': function() {
       // Generate a new contact with randomly generated data
       var nameParts = chance.name().split(' ');
-      var contact = new Contact({
+      var contact = new models.Contact({
         firstName: nameParts[0],
         lastName: nameParts[1],
         emailAddress: nameParts.join('.').toLowerCase() + '@gmail.com',

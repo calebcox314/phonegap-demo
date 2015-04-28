@@ -1,0 +1,24 @@
+{
+  "bitwise": true,
+  "curly": true,
+  "eqeqeq": true,
+  "freeze": true,
+  "forin": true,
+  "futurehostile": true,
+  "globals": {
+    "cordova": false,
+    "define": false
+  },
+  "globalstrict": true,
+  "latedef": true,
+  "noarg": true,
+  "nocomma": true,
+  "nonew": true,
+  "singleGroups": true,
+  "strict": true,
+  "undef": true,
+  "unused": "vars",
+  "esnext": true,
+  "browser": true,
+  "devel": true
+}

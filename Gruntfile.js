@@ -1,10 +1,17 @@
+/* global __dirname, module, require */
+
 module.exports = function(grunt) {
+  'use strict';
+
   // Project configuration
   var srcFiles = ['Gruntfile.js', 'www/js/**/*.js'];
   grunt.initConfig({
 
     jshint: {
-      src: srcFiles
+      src: srcFiles,
+      options: {
+        jshintrc: true
+      }
     },
 
     jscs: {
@@ -28,7 +35,7 @@ module.exports = function(grunt) {
   // This custom task starts a simple express server that allows the application to be run in a browser for rapid development
   grunt.registerTask('serve', 'Start server for browser-based app', function(port) {
     // This task is asynchronous and never completes (it must be terminated by manually terminating the grunt process)
-    var done = this.async();
+    var done = this.async(); // jshint ignore:line
 
     var express = require('express');
     var app = express();

@@ -5,6 +5,8 @@
  */
 
 define(function(require) {
+  'use strict';
+
   var $ = require('jquery');
   var can = require('can');
   var HashMap = require('util/HashMap');

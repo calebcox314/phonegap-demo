@@ -1,6 +1,8 @@
 define(function(require) {
   'use strict';
 
+  var can = require('can');
+
   var Database = {
     // Maps attribute types to SQLite type
     // jscs:disable disallowQuotedKeysInObjects

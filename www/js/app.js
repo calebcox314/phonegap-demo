@@ -1,3 +1,5 @@
+/* global require */
+
 // Configure Require.JS
 // jscs:disable disallowQuotedKeysInObjects
 require.config({
@@ -19,7 +21,7 @@ define(function(require) {
   'use strict';
 
   var $ = require('jquery');
-  var jqm = require('jquery-mobile');
+  require('jquery-mobile');
   var can = require('can');
   // Load the CanJS proxy plugin
   require('can/construct/proxy');
@@ -64,7 +66,7 @@ define(function(require) {
           // Create all application control instances
           [Controls.Contacts, Controls.EditContact].forEach(function(Control) {
             var controlName = can.hyphenate(Control.fullName).toLowerCase();
-            var control = new Control('[data-control=' + controlName + ']', {});
+            var control = new Control('[data-control=' + controlName + ']', {}); // jshint ignore:line
           });
 
           // Initialize the jQuery Mobile widgets
