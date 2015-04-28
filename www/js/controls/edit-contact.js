@@ -2,11 +2,23 @@ define(function(require) {
   'use strict';
 
   var can = require('can');
+  var Page = require('controls/page');
+  var Navigator = require('navigator');
 
   var models = require('models');
-  return can.Control.extend({
+  return Page.extend('EditContact', {
+    pageId: 'contact',
+    parentId: 'contacts',
+    routeAttr: 'contactId'
+  }, {
     // Initialize the control
     init: function(element) {
+      // Call the Page constructor
+      this._super.apply(this, arguments);
+
+      // Listen for changes to the route
+      this.on('route.change', this.proxy('routeChange'));
+
       // This data will be available to the template
       this.scope = new can.Map({
         contact: null
@@ -52,26 +64,22 @@ define(function(require) {
      */
     '.save click': function() {
       this.saveContact();
-      location.hash = can.route.url({ page: 'contacts' });
+      Navigator.openParentPage();
 
       // Prevent the default submit behavior
       return false;
     },
     '.cancel click': function() {
       this.revertContact();
-      location.hash = can.route.url({ page: 'contacts' });
+      Navigator.openParentPage();
     },
 
     /*
-     * Listen for changes to the route's "contactId" attribute.
+     * Listen for changes to the page's registered route attribute, "contactId" in this case.
      */
-    '{can.route} contactId': function(route, event, contactId) {
+    routeChange: function(event, contactId) {
       var contact = null;
-      if (contactId === undefined) {
-        // Ignore the contactId if it is undefined
-        return;
-      }
-      else if (contactId === 'new') {
+      if (contactId === 'new') {
         // Create a new contact to edit
         contact = new models.Contact();
       }
@@ -85,7 +93,7 @@ define(function(require) {
         else {
           // No contact has that contactId
           console.error('Attempting to navigate to a non-existent contact!');
-          can.route.removeAttr('contactId');
+          Navigator.openParentPage();
         }
       }
       this.setContact(contact);

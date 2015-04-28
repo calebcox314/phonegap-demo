@@ -3,15 +3,22 @@ define(function(require) {
 
   var $ = require('jquery');
   var can = require('can');
+  var Page = require('controls/page');
+  var Navigator = require('navigator');
 
   // Load the ChanceJS library and instantiate a new chance generator instance
   var Chance = require('chance');
   var chance = new Chance();
 
   var models = require('models');
-  return can.Control.extend({
+  return Page.extend('Contacts', {
+    pageId: 'contacts'
+  }, {
     // Initialize the control
     init: function(element) {
+      // Call the Page constructor
+      this._super.apply(this, arguments);
+
       // Get the global list of all contact models
       var contacts = this.contacts = models.Contact.list;
 
@@ -38,8 +45,10 @@ define(function(require) {
      * Respond to control events.
      */
     '.create click': function() {
-      // Start editing a new contact
-      this.openContact(null);
+      // Open a new contact for editing
+      Navigator.openPage('contact', {
+        contactId: 'new'
+      });
     },
     '.generate click': function() {
       // Generate a new contact with randomly generated data
@@ -64,21 +73,9 @@ define(function(require) {
     '.contact click': function(element) {
       // The contact's id is stored in the data-id attribute on the .contact element
       var contactId = $(element).data('id');
-      // Start editing the clicked contact
-      this.openContact(contactId);
-    },
-
-    /*
-     * Navigate to a specific contact in the UI.
-     *
-     * @param contactId {number} The contactId of the contact to navigate to (can be null to navigate to a newly-created contact).
-     */
-    openContact: function(contactId) {
-      // Set the route's "page" attribute to navigate to the edit contact page
-      // and the "contactId" attribute to specify which contact to navigate to
-      can.route.attr({
-        page: 'contact',
-        contactId: contactId === null ? 'new' : contactId
+      // Open the clicked contact for editing
+      Navigator.openPage('contact', {
+        contactId: contactId
       });
     },
 
