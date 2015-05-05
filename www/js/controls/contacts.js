@@ -12,7 +12,8 @@ define(function(require) {
 
   var models = require('models');
   return Page.extend('Contacts', {
-    pageId: 'contacts'
+    pageId: 'contacts',
+    template: 'template-contacts'
   }, {
     // Initialize the control
     init: function(element) {
@@ -22,13 +23,9 @@ define(function(require) {
       // Get the global list of all contact models
       var contacts = this.contacts = models.Contact.list;
 
-      // This data will be available to the template
-      this.scope = new can.Map({
-        contacts: contacts
-      });
-      // Render the control using the contact list and insert it into the control's DOM element
-      var fragment = can.view('app-contacts', this.scope);
-      this.element.html(fragment);
+      // Initialize the control scope and render it
+      this.scope.attr('contacts', contacts);
+      this.render();
 
       // Initialize the jQueryMobile listview component
       this.$listview = element.find('ul');

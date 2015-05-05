@@ -13,7 +13,8 @@ define(function(require) {
   require('can/event');
   var Navigator = require('navigator');
 
-  var Page = can.Control.extend({
+  var Control = require('controls/control');
+  var Page = Control.extend({
     // The unique id of this page
     // It should always be overriden in derived page controls
     pageId: null,
@@ -44,6 +45,9 @@ define(function(require) {
           }
         });
       }
+
+      // Call the Control constructor
+      return this._super.apply(this, arguments);
     }
   });
   // Add event functionality to the Page control

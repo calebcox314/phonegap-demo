@@ -9,7 +9,7 @@
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" data-main="js/app" src="bower_components/requirejs/require.js"></script>
 
-    <script type="text/mustache" id="app-contacts">
+    <script type="text/mustache" id="template-contacts">
       <ul data-role="listview" class="ui-listview" style="margin-bottom: 2em;">
         <li data-role="list-divider" role="heading">Contacts</li>
         {{#each contacts}}
@@ -21,7 +21,7 @@
       <button class="ui-btn ui-corner-all purge">Purge</button>
     </script>
 
-    <script type="text/mustache" id="edit-contact">
+    <script type="text/mustache" id="template-contact">
       <form>
         <label for="first-name">First name</label>
         <input type="text" id="first-name" can-value="contact.firstName" autofocus>

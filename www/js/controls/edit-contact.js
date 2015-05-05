@@ -1,7 +1,6 @@
 define(function(require) {
   'use strict';
 
-  var can = require('can');
   var Page = require('controls/page');
   var Navigator = require('navigator');
 
@@ -9,7 +8,8 @@ define(function(require) {
   return Page.extend('EditContact', {
     pageId: 'contact',
     parentId: 'contacts',
-    routeAttr: 'contactId'
+    routeAttr: 'contactId',
+    template: 'template-contact'
   }, {
     // Initialize the control
     init: function(element) {
@@ -19,14 +19,9 @@ define(function(require) {
       // Listen for changes to the route
       this.on('route.change', this.proxy('routeChange'));
 
-      // This data will be available to the template
-      this.scope = new can.Map({
-        contact: null
-      });
-
-      // Render the control using the contact and insert it into the control's DOM element
-      var fragment = can.view('edit-contact', this.scope);
-      this.element.html(fragment);
+      // Initialize the control scope and render it
+      this.setContact(null);
+      this.render();
     },
 
     /*
