@@ -76,6 +76,10 @@ define(function(require, exports, module) {
           var Navigator = require('navigator');
           Navigator.activate('contacts');
 
+          // Load and initialize the transaction monitor
+          var TransactionMonitor = require('transaction-monitor');
+          var transactionMonitor = new TransactionMonitor({ monitoredModels: ['Contact'] }); // jshint ignore:line
+
           console.log('Finished initialization');
         }).fail(function() {
           console.error('Failed to load models!');
