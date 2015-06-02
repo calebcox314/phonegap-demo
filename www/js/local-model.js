@@ -19,12 +19,22 @@ define(function(require) {
     },
 
     findAll: function(params, success, error) {
-      return db.find(this.getTableData(), params).then(success, error);
+      return db.find(this.getTableData(), params).done(function(models) {
+        // Mark the found models as present in the database
+        models.forEach(function(model) {
+          model.isSaved = true;
+        });
+      }).then(success, error);
     },
 
     findOne: function(params, success, error) {
       return db.find(this.getTableData(), params).then(function(rows) {
         return rows[0] || null;
+      }).done(function(model) {
+        // Mark the found model as present in the database
+        if (model) {
+          model.isSaved = true;
+        }
       }).then(success, error);
     },
 
@@ -53,5 +63,27 @@ define(function(require) {
         attributes: this.attributes
       };
     }
-  }, {});
+  }, {
+    isSaved: false,
+
+    save: function() {
+      // Call the original "save" function
+      var returnValue = this._super.apply(this, arguments);
+      // Mark this model as present in the database
+      this.isSaved = true;
+      return returnValue;
+    },
+
+    // Override the built-in can.Model#isNew with more intelligent functionality
+    // The original isNew function determines whether or not a model is already present in the
+    // database by checking whether its primary key is set. That heuristic is not appropriate for
+    // this application because the primary key occasionally needs to be set explicitly rather than
+    // automatically calculated via AUTOINCREMENT. Instead, we set a boolean "isSaved" flag to true
+    // on every model read from the database via findOne and findAll. Also, calls to "save" also set
+    // this flag to true. "isNew" then calculates whether the model has been saved or not by simply
+    // checking the "isSaved" flag.
+    isNew: function() {
+      return !this.isSaved;
+    }
+  });
 });
