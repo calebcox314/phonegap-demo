@@ -95,11 +95,12 @@ define(function(require, exports, module) {
         var fields = [];
         var placeholders = [];
         can.each(tableData.attributes, function(type, key) {
-          if (key === tableData.primaryKey) {
-            // Skip the primary key because it is not set yet
+          var value = attrs[key];
+          if (typeof value === 'undefined') {
+            // Skip attributes without a value
             return;
           }
-          values.push(attrs[key]);
+          values.push(value);
           fields.push('"' + key + '"');
           placeholders.push('?');
         });
