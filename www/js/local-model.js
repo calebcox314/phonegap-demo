@@ -6,6 +6,10 @@ define(function(require, exports, module) {
   require('can/construct/super');
   require('can/map/define');
 
+  // Instantiate a new ChanceJS generator instance for generating UUIDs
+  var Chance = require('chance');
+  var chance = new Chance();
+
   var db = require('db');
   module.exports = can.Model.extend('LocalModel', {
     extend: function(name, staticProps, protoProps) {
@@ -18,9 +22,18 @@ define(function(require, exports, module) {
         }
       });
 
-      // Set the id attribute as the model's primary key
-      staticProps.attributes[staticProps.id] = 'int|primarykey|autoincrement';
-      return this._super.apply(this, arguments);
+      var Model = this._super.apply(this, arguments);
+      if (Model.hasUuid) {
+        // For models with a UUID field, the primary key defaults to an automatically generated UUID
+        Object.defineProperty(Model.defaults, Model.id, {
+          get: function() {
+            // Generate a new UUID
+            return chance.guid();
+          },
+          enumerable: true
+        });
+      }
+      return Model;
     },
 
     install: function(success, error) {
@@ -53,7 +66,10 @@ define(function(require, exports, module) {
       return db.create(this.getTableData(), params).then(function(insertId) {
         // The object returned here will augment the model's attributes
         var obj = {};
-        obj[primaryKey] = insertId;
+        // If the model did not have an explicit primary key, record the generated one
+        if (typeof params[primaryKey] === 'undefined') {
+          obj[primaryKey] = insertId;
+        }
         return obj;
       }).done(success).fail(error);
     },
