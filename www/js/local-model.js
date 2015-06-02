@@ -19,7 +19,7 @@ define(function(require, exports, module) {
       });
 
       // Set the id attribute as the model's primary key
-      staticProps.attributes[staticProps.id] = 'primarykey';
+      staticProps.attributes[staticProps.id] = 'int|primarykey|autoincrement';
       return this._super.apply(this, arguments);
     },
 
