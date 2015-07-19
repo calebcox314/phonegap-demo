@@ -26,9 +26,9 @@ define(function(require) {
       this.transaction(function(tx) {
         var columns = [];
         can.each(tableData.attributes, function(type, name) {
-          columns.push(name + ' ' + (_this.sqliteTypeMap[type] || _this.sqliteTypeMap.default));
+          columns.push('"' + name + '" ' + (_this.sqliteTypeMap[type] || _this.sqliteTypeMap.default));
         });
-        tx.executeSql('CREATE TABLE IF NOT EXISTS ' + tableData.name + ' (' + columns.join(', ') + ')', [], function(tx, result) {
+        tx.executeSql('CREATE TABLE IF NOT EXISTS "' + tableData.name + '" (' + columns.join(', ') + ')', [], function(tx, result) {
           deferred.resolve(null);
         }, deferred.reject);
       }, deferred.reject);
@@ -42,10 +42,10 @@ define(function(require) {
         var conditions = [];
         can.each(query || {}, function(value, key) {
           values.push(value);
-          conditions.push(key + '=?');
+          conditions.push('"' + key + '"=?');
         });
         var conditionClause = conditions.length ? ' WHERE ' + conditions.join(' AND ') : '';
-        tx.executeSql('SELECT * FROM ' + tableData.name + conditionClause, values, function(tx, result) {
+        tx.executeSql('SELECT * FROM "' + tableData.name + '"' + conditionClause, values, function(tx, result) {
           var rows = [];
           for (var i = 0; i < result.rows.length; ++i) {
             rows.push(result.rows.item(i));
@@ -68,11 +68,11 @@ define(function(require) {
             return;
           }
           values.push(attrs[key]);
-          fields.push(key);
+          fields.push('"' + key + '"');
           placeholders.push('?');
         });
         var valuesClause = ' (' + fields.join(',') + ') VALUES (' + placeholders.join(',') + ')';
-        tx.executeSql('INSERT INTO ' + tableData.name + (fields.length === 0 ? ' DEFAULT VALUES' : valuesClause), values, function(tx, result) {
+        tx.executeSql('INSERT INTO "' + tableData.name + '"' + (fields.length === 0 ? ' DEFAULT VALUES' : valuesClause), values, function(tx, result) {
           deferred.resolve(result.insertId);
         }, deferred.reject);
       }, deferred.reject);
@@ -86,11 +86,11 @@ define(function(require) {
         var assignments = [];
         can.each(tableData.attributes, function(type, key) {
           values.push(attrs[key]);
-          assignments.push(key + '=?');
+          assignments.push('"' + key + '"=?');
         });
         values.push(id);
         var assignmentsClause = assignments.join(', ');
-        tx.executeSql('UPDATE ' + tableData.name + ' SET ' + assignmentsClause + ' WHERE ' + tableData.primaryKey + '=?', values, function(tx, result) {
+        tx.executeSql('UPDATE "' + tableData.name + '" SET ' + assignmentsClause + ' WHERE ' + tableData.primaryKey + '=?', values, function(tx, result) {
           deferred.resolve(null);
         }, deferred.reject);
       }, deferred.reject);
@@ -100,7 +100,7 @@ define(function(require) {
     destroy: function(tableData, id) {
       var deferred = can.Deferred();
       this.transaction(function(tx) {
-        tx.executeSql('DELETE FROM ' + tableData.name + ' WHERE ' + tableData.primaryKey + '=?', [id], function(tx, result) {
+        tx.executeSql('DELETE FROM "' + tableData.name + '" WHERE "' + tableData.primaryKey + '"=?', [id], function(tx, result) {
           deferred.resolve(null);
         }, deferred.reject);
       }, deferred.reject);
