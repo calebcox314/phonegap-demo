@@ -4,10 +4,20 @@ define(function(require) {
   // Load the CanJS and the required plugins
   var can = require('can');
   require('can/construct/super');
+  require('can/map/define');
 
   var db = require('db');
   return can.Model.extend('LocalModel', {
     extend: function(name, staticProps, protoProps) {
+      // Ignore the isSaved property when serializing
+      can.extend(true, protoProps, {
+        define: {
+          isSaved: {
+            serialize: false
+          }
+        }
+      });
+
       // Set the id attribute as the model's primary key
       staticProps.attributes[staticProps.id] = 'primarykey';
       return this._super.apply(this, arguments);
