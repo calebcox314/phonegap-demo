@@ -5,6 +5,7 @@ define(function(require, exports, module) {
   require('can/map/backup');
 
   module.exports = {
-    Contact: require('models/contact')
+    Contact: require('models/contact'),
+    Transaction: require('models/transaction')
   };
 });
