@@ -51,6 +51,11 @@ define(function(require, exports, module) {
         Model.bind('created', function(event, model) {
           Model.list.push(model);
         });
+
+        // HACK: CanJS does not automatically remove destroyed models from the
+        // list without this hack
+        Model.list.bind('remove', function() {});
+
         return dfd;
       }));
     },
