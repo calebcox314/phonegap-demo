@@ -1,22 +1,3 @@
-/* global require */
-
-// Configure Require.JS
-// jscs:disable disallowQuotedKeysInObjects
-require.config({
-  paths: {
-    'jquery': '../bower_components/jquery/jquery',
-    'jquery-mobile': '../bower_components/jquery-mobile/jquery.mobile-1.4.5',
-    'can': '../bower_components/canjs/amd/can',
-    'chance': '../bower_components/chance/chance'
-  },
-  shim: {
-    'jquery-mobile': {
-      deps: ['jquery-mobile-config', 'jquery']
-    }
-  }
-});
-// jscs:enable disallowQuotedKeysInObjects
-
 define(function(require, exports, module) {
   'use strict';
 
@@ -83,7 +64,7 @@ define(function(require, exports, module) {
 
           // Load and initialize the transaction monitor
           var TransactionMonitor = require('transaction-monitor');
-          var transactionMonitor = new TransactionMonitor({ monitoredModels: ['Contact'] }); // jshint ignore:line
+          app.transactionMonitor = new TransactionMonitor({ monitoredModels: ['Contact'] });
 
           console.log('Finished initialization');
         }).fail(function() {
@@ -94,7 +75,4 @@ define(function(require, exports, module) {
       });
     }
   };
-
-  // Boot the application
-  app.initialize();
 });

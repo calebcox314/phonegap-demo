@@ -8,6 +8,7 @@ define(function(require) {
     ['destroyed', 'destroy']
   ]);
 
+  var can = require('can');
   var LocalModel = require('local-model');
   var Transaction = LocalModel.extend('Transaction', {
     id: 'transactionId',
@@ -65,13 +66,17 @@ define(function(require) {
 
     /*
      * Play back a single transaction
+     *
+     * @returns {Deferred}
      */
     apply: function() {
+      var dfd = can.Deferred();
+
       var modelName = this.attr('modelName');
       var models = require('models');
       var Model = models[modelName];
       if (!Model) {
-        throw new Error('Cannot apply transaction to non-existent model "' + this.attr('modelName') + '"');
+        return dfd.reject(new Error('Cannot apply transaction to non-existent model "' + this.attr('modelName') + '"')).promise();
       }
 
       var attrs = this.attr('params');
@@ -83,34 +88,39 @@ define(function(require) {
         // Create a new model
         if (!model) {
           model = new Model(attrs);
-          model.save();
+          return model.save();
         }
         else {
           console.warn('Cannot create existing model with id ' + id);
+          dfd.resolve();
         }
       }
       else if (operation === 'update') {
         // Find the model and update it
         if (model) {
           model.attr(attrs);
-          model.save();
+          return model.save();
         }
         else {
           console.warn('Cannot update non-existent model with id ' + id);
+          dfd.resolve();
         }
       }
       else if (operation === 'destroy') {
         // Find the model and destroy it
         if (model) {
-          model.destroy();
+          return model.destroy();
         }
         else {
           console.warn('Cannot destroy non-existent model with id ' + id);
+          dfd.resolve();
         }
       }
       else {
-        throw new Error('Cannot apply transaction with unrecognized operation "' + operation + '"');
+        return dfd.reject(new Error('Cannot apply transaction with unrecognized operation "' + operation + '"'));
       }
+
+      return dfd.promise();
     }
   });
   return Transaction;
