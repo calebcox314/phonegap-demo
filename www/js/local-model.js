@@ -25,7 +25,7 @@ define(function(require) {
 
     install: function(success, error) {
       // Install this model in the database
-      return db.install(this.getTableData()).then(success, error);
+      return db.install(this.getTableData()).done(success).fail(error);
     },
 
     findAll: function(params, success, error) {
@@ -34,7 +34,7 @@ define(function(require) {
         models.forEach(function(model) {
           model.isSaved = true;
         });
-      }).then(success, error);
+      }).done(success).fail(error);
     },
 
     findOne: function(params, success, error) {
@@ -45,7 +45,7 @@ define(function(require) {
         if (model) {
           model.isSaved = true;
         }
-      }).then(success, error);
+      }).done(success).fail(error);
     },
 
     create: function(params, success, error) {
@@ -55,15 +55,15 @@ define(function(require) {
         var obj = {};
         obj[primaryKey] = insertId;
         return obj;
-      }).then(success, error);
+      }).done(success).fail(error);
     },
 
     update: function(id, params, success, error) {
-      return db.update(this.getTableData(), id, params).then(success, error);
+      return db.update(this.getTableData(), id, params).done(success).fail(error);
     },
 
     destroy: function(id, params, success, error) {
-      return db.destroy(this.getTableData(), id).then(success, error);
+      return db.destroy(this.getTableData(), id).done(success).fail(error);
     },
 
     getTableData: function() {
