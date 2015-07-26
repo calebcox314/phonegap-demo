@@ -78,10 +78,11 @@ define(function(require) {
 
     save: function() {
       // Call the original "save" function
-      var returnValue = this._super.apply(this, arguments);
-      // Mark this model as present in the database
-      this.isSaved = true;
-      return returnValue;
+      var _this = this;
+      return this._super.apply(this, arguments).done(function() {
+        // Mark this model as present in the database
+        _this.isSaved = true;
+      });
     },
 
     // Override the built-in can.Model#isNew with more intelligent functionality
