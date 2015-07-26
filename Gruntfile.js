@@ -38,7 +38,9 @@ module.exports = function(grunt) {
     var done = this.async(); // jshint ignore:line
 
     var express = require('express');
+    var bodyParser = require('body-parser');
     var app = express();
+    app.use(bodyParser.json()); // for parsing application/json
 
     // Log all GET requests
     app.get('*', function(req, res, next) {
@@ -53,6 +55,26 @@ module.exports = function(grunt) {
     var projectRoot = __dirname;
     app.use('/browser/www/', express.static(path.join(projectRoot, 'www')));
     app.use('/browser/www/', express.static(path.join(projectRoot, 'platforms', 'browser', 'www')));
+
+    var transactions = [];
+    app.post('/sync', function(req, res) {
+      var lastSyncTimestamp = req.body.lastSyncTimestamp;
+      var now = Date.now();
+      res.send({
+        status: 'success',
+        data: {
+          lastSyncTimestamp: now,
+          transactionLog: transactions.filter(function(transaction) {
+            return transaction.timestamp === null || transaction.timestamp > lastSyncTimestamp;
+          })
+        }
+      });
+      req.body.transactionLog.forEach(function(transaction) {
+        transaction.timestamp = now;
+        transactions.push(transaction);
+      });
+      console.log(transactions);
+    });
 
     // Listen on the provided port, defaulting to 8000
     var server = app.listen(port || 8000, function() {

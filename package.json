@@ -2,6 +2,7 @@
   "name": "phonegap-demo",
   "private": true,
   "devDependencies": {
+    "body-parser": "^1.13.2",
     "express": "^4.12.1",
     "grunt": "^0.4.5",
     "grunt-contrib-jshint": "^0.11.0",
