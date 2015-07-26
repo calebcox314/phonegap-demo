@@ -4,7 +4,7 @@
  * pages as the user moves through the application.
  */
 
-define(function(require) {
+define(function(require, exports, module) {
   'use strict';
 
   var $ = require('jquery');
@@ -16,7 +16,7 @@ define(function(require) {
   // It will be populated through calls to registerPage
   var pageRegistry = new HashMap(function(page) { return page.page; });
 
-  var Navigator = {
+  var Navigator = module.exports = {
     /*
      * Register a page with the application navigator. This will initialize routing for the page.
      *
@@ -100,7 +100,4 @@ define(function(require) {
       return can.route.attr('page');
     }
   };
-
-  // Export the Navigator singleton
-  return Navigator;
 });

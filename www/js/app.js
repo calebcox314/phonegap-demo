@@ -17,7 +17,7 @@ require.config({
 });
 // jscs:enable disallowQuotedKeysInObjects
 
-define(function(require) {
+define(function(require, exports, module) {
   'use strict';
 
   var $ = require('jquery');
@@ -28,7 +28,7 @@ define(function(require) {
   var Controls = require('controls');
   var Models = require('models');
 
-  var app = {
+  var app = module.exports = {
     // Initialize the applications
     initialize: function() {
       // Bind to startup events
@@ -88,6 +88,4 @@ define(function(require) {
 
   // Boot the application
   app.initialize();
-
-  return app;
 });

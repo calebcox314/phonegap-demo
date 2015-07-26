@@ -1,11 +1,11 @@
-define(function(require) {
+define(function(require, exports, module) {
   'use strict';
 
   var Page = require('controls/page');
   var Navigator = require('navigator');
 
   var models = require('models');
-  return Page.extend('EditContact', {
+  module.exports = Page.extend('EditContact', {
     pageId: 'contact',
     parentId: 'contacts',
     routeAttr: 'contactId',

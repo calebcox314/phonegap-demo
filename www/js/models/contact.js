@@ -1,10 +1,10 @@
-define(function(require) {
+define(function(require, exports, module) {
   'use strict';
 
   var can = require('can');
   var LocalModel = require('local-model');
 
-  return LocalModel.extend('Contact', {
+  module.exports = LocalModel.extend('Contact', {
     id: 'contactId',
     attributes: {
       firstName: 'string',

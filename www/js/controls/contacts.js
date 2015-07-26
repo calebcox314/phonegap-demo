@@ -1,4 +1,4 @@
-define(function(require) {
+define(function(require, exports, module) {
   'use strict';
 
   var $ = require('jquery');
@@ -11,7 +11,7 @@ define(function(require) {
   var chance = new Chance();
 
   var models = require('models');
-  return Page.extend('Contacts', {
+  module.exports = Page.extend('Contacts', {
     pageId: 'contacts',
     template: 'template-contacts'
   }, {

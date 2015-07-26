@@ -1,4 +1,4 @@
-define(function(require) {
+define(function(require, exports, module) {
   'use strict';
 
   /*
@@ -8,7 +8,7 @@ define(function(require) {
    */
 
   var can = require('can');
-  var HashMap = can.Construct.extend({
+  var HashMap = module.exports = can.Construct.extend({
     /*
      * HashMap constructor
      *
@@ -60,6 +60,4 @@ define(function(require) {
       return this.map[method].apply(this.map, arguments);
     };
   });
-
-  return HashMap;
 });

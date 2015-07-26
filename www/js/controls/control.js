@@ -1,4 +1,4 @@
-define(function(require) {
+define(function(require, exports, module) {
   'use strict';
 
   /*
@@ -9,7 +9,7 @@ define(function(require) {
 
   var can = require('can');
 
-  var Control = can.Control.extend({
+  module.exports = can.Control.extend({
     // The unique id of the template used to render the control
     // It should always be overriden in derived controls
     template: null
@@ -31,5 +31,4 @@ define(function(require) {
       this.element.html(fragment);
     }
   });
-  return Control;
 });

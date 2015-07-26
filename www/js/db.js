@@ -1,9 +1,9 @@
-define(function(require) {
+define(function(require, exports, module) {
   'use strict';
 
   var can = require('can');
 
-  var Database = {
+  var Database = module.exports = {
     // Maps attribute types to SQLite type
     // jscs:disable disallowQuotedKeysInObjects
     sqliteTypeMap: {

@@ -1,4 +1,4 @@
-define(function(require) {
+define(function(require, exports, module) {
   'use strict';
 
   // Load the CanJS and the required plugins
@@ -7,7 +7,7 @@ define(function(require) {
   require('can/map/define');
 
   var db = require('db');
-  return can.Model.extend('LocalModel', {
+  module.exports = can.Model.extend('LocalModel', {
     extend: function(name, staticProps, protoProps) {
       // Ignore the isSaved property when serializing
       can.extend(true, protoProps, {

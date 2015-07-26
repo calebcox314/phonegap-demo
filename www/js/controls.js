@@ -1,7 +1,7 @@
-define(function(require) {
+define(function(require, exports, module) {
   'use strict';
 
-  return {
+  module.exports = {
     Contacts: require('controls/contacts'),
     EditContact: require('controls/edit-contact')
   };

@@ -1,10 +1,10 @@
-define(function(require) {
+define(function(require, exports, module) {
   'use strict';
 
   // Load CanJS backup plugin
   require('can/map/backup');
 
-  return {
+  module.exports = {
     Contact: require('models/contact')
   };
 });

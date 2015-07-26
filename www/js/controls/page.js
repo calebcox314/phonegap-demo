@@ -1,4 +1,4 @@
-define(function(require) {
+define(function(require, exports, module) {
   'use strict';
 
   /*
@@ -14,7 +14,7 @@ define(function(require) {
   var Navigator = require('navigator');
 
   var Control = require('controls/control');
-  var Page = Control.extend({
+  var Page = module.exports = Control.extend({
     // The unique id of this page
     // It should always be overriden in derived page controls
     pageId: null,
@@ -52,6 +52,4 @@ define(function(require) {
   });
   // Add event functionality to the Page control
   can.extend(Page.prototype, can.event);
-
-  return Page;
 });
