@@ -1,6 +1,9 @@
 define(function(require, exports, module) {
   'use strict';
 
+  // Load the control's parent
+  require('controls/contacts');
+
   var Page = require('controls/page');
   var Navigator = require('navigator');
 
