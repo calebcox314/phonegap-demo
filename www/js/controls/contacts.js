@@ -67,6 +67,30 @@ define(function(require, exports, module) {
         });
       });
     },
+    '.sync click': function() {
+      // Send the current transactions to the server
+      var app = require('app');
+      app.transactionMonitor.sync(function(transactions) {
+        return $.ajax('/sync', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          data: JSON.stringify({
+            lastSyncTimestamp: window.localStorage.getItem('lastSyncTimestamp'),
+            transactionLog: transactions.map(function(transaction) {
+              return transaction.serialize();
+            })
+          })
+        }).then(function(response) {
+          window.localStorage.setItem('lastSyncTimestamp', response.data.lastSyncTimestamp);
+          return models.Transaction.models(response.data.transactionLog);
+        });
+      }).fail(function(err) {
+        console.error('Sync failed!');
+        console.log(err);
+      });
+    },
     '.contact click': function(element) {
       // The contact's id is stored in the data-id attribute on the .contact element
       var contactId = $(element).data('id');

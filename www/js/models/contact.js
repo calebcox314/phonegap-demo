@@ -6,7 +6,9 @@ define(function(require, exports, module) {
 
   module.exports = LocalModel.extend('Contact', {
     id: 'contactId',
+    hasUuid: true,
     attributes: {
+      contactId: 'string|primarykey|unique',
       firstName: 'string',
       lastName: 'string',
       emailAddress: 'string',

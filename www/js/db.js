@@ -5,15 +5,20 @@ define(function(require, exports, module) {
 
   var Database = module.exports = {
     // Maps attribute types to SQLite type
-    // jscs:disable disallowQuotedKeysInObjects
-    sqliteTypeMap: {
-      'primarykey': 'INTEGER PRIMARY KEY AUTOINCREMENT',
-      'string': 'TEXT',
-      'int': 'INTEGER',
-      'float': 'REAL',
-      'default': 'TEXT'
-    },
-    // jscs:enable disallowQuotedKeysInObjects
+    sqliteTypeMap: new Map([
+      ['string', 'TEXT'],
+      ['int', 'INTEGER'],
+      ['float', 'REAL'],
+      ['default', 'TEXT']
+    ]),
+
+    // Maps attribute modifiers to SQLite type modifiers
+    sqliteModifierMap: new Map([
+      ['primarykey', 'PRIMARY KEY'],
+      ['autoincrement', 'AUTOINCREMENT'],
+      ['unique', 'UNIQUE'],
+      ['notnull', 'NOT NULL']
+    ]),
 
     init: function() {
       var openDatabase = cordova.platformId === 'browser' ? window.openDatabase : window.sqlitePlugin.openDatabase;
@@ -25,9 +30,36 @@ define(function(require, exports, module) {
       var _this = this;
       this.transaction(function(tx) {
         var columns = [];
-        can.each(tableData.attributes, function(type, name) {
-          columns.push('"' + name + '" ' + (_this.sqliteTypeMap[type] || _this.sqliteTypeMap.default));
+        can.each(tableData.attributes, function(attributeType, attributeName) {
+          // Convert the generalized type to a SQLite type string
+          // The type should consist of multiple pipe-separated segments. The first segment
+          // represents the base type (like string, int, or float) and the other segments represent
+          // type modifiers (like primarykey or autoincrement)
+          var sqliteType = attributeType.toLowerCase().split('|').map(function(type, index) {
+            if (index === 0) {
+              // The first segment represents the base type
+              var baseType = type ? _this.sqliteTypeMap.get(type) : _this.sqliteTypeMap.get('default');
+              if (!baseType) {
+                deferred.reject(new Error('Unrecognized attribute base type "' + type + '"'));
+              }
+              return baseType;
+            }
+            else {
+              // All other segments represent type modifiers
+              var modifier = _this.sqliteModifierMap.get(type);
+              if (!modifier) {
+                deferred.reject(new Error('Unrecognized attribute type modifier "' + type + '"'));
+              }
+              return modifier;
+            }
+          }).join(' ');
+          columns.push('"' + attributeName + '" ' + sqliteType);
         });
+        if (deferred.state() === 'rejected') {
+          // An error occured, so do not attempt to create the table
+          return;
+        }
+
         tx.executeSql('CREATE TABLE IF NOT EXISTS "' + tableData.name + '" (' + columns.join(', ') + ')', [], function(tx, result) {
           deferred.resolve(null);
         }, deferred.reject);
@@ -63,11 +95,12 @@ define(function(require, exports, module) {
         var fields = [];
         var placeholders = [];
         can.each(tableData.attributes, function(type, key) {
-          if (key === tableData.primaryKey) {
-            // Skip the primary key because it is not set yet
+          var value = attrs[key];
+          if (typeof value === 'undefined') {
+            // Skip attributes without a value
             return;
           }
-          values.push(attrs[key]);
+          values.push(value);
           fields.push('"' + key + '"');
           placeholders.push('?');
         });

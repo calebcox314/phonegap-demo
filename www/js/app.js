@@ -1,22 +1,3 @@
-/* global require */
-
-// Configure Require.JS
-// jscs:disable disallowQuotedKeysInObjects
-require.config({
-  paths: {
-    'jquery': '../bower_components/jquery/jquery',
-    'jquery-mobile': '../bower_components/jquery-mobile/jquery.mobile-1.4.5',
-    'can': '../bower_components/canjs/amd/can',
-    'chance': '../bower_components/chance/chance'
-  },
-  shim: {
-    'jquery-mobile': {
-      deps: ['jquery-mobile-config', 'jquery']
-    }
-  }
-});
-// jscs:enable disallowQuotedKeysInObjects
-
 define(function(require, exports, module) {
   'use strict';
 
@@ -51,6 +32,11 @@ define(function(require, exports, module) {
         Model.bind('created', function(event, model) {
           Model.list.push(model);
         });
+
+        // HACK: CanJS does not automatically remove destroyed models from the
+        // list without this hack
+        Model.list.bind('remove', function() {});
+
         return dfd;
       }));
     },
@@ -76,6 +62,10 @@ define(function(require, exports, module) {
           var Navigator = require('navigator');
           Navigator.activate('contacts');
 
+          // Load and initialize the transaction monitor
+          var TransactionMonitor = require('transaction-monitor');
+          app.transactionMonitor = new TransactionMonitor({ monitoredModels: ['Contact'] });
+
           console.log('Finished initialization');
         }).fail(function() {
           console.error('Failed to load models!');
@@ -85,7 +75,4 @@ define(function(require, exports, module) {
       });
     }
   };
-
-  // Boot the application
-  app.initialize();
 });
