@@ -53,8 +53,12 @@ module.exports = function(grunt) {
     // inconvenience of having to run "cordova prepare browser" after every file modification.
     var path = require('path');
     var projectRoot = __dirname;
-    app.use('/browser/www/', express.static(path.join(projectRoot, 'www')));
-    app.use('/browser/www/', express.static(path.join(projectRoot, 'platforms', 'browser', 'www')));
+    var wwwRoute = express.static(path.join(projectRoot, 'www'));
+    ['browser', 'ios', 'android'].forEach(function(platform) {
+      var platformPath = '/' + platform + '/www/';
+      app.use(platformPath, wwwRoute);
+      app.use(platformPath, express.static(path.join(projectRoot, 'platforms', platform, 'www')));
+    });
 
     var transactions = [];
     app.post('/sync', function(req, res) {
