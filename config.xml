@@ -5,6 +5,9 @@
     <author href="http://www.appdevdesigns.net">AppDev Designs</author>
     <content src="index.html" />
     <access origin="*" />
+    <engine name="android" spec="^4.1.0" />
+    <engine name="ios" spec="^3.9.0" />
+    <engine name="browser" spec="^3.6.0" />
     <gap:plugin name="org.apache.cordova.console" />
     <gap:plugin name="https://github.com/brodysoft/Cordova-SQLitePlugin" />
 </widget>
