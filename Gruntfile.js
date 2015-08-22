@@ -77,6 +77,17 @@ module.exports = function(grunt) {
       console.log(transactions);
     });
 
+    // Print the list of transactions
+    app.get('/sync/dump', function(req, res) {
+      res.json({ transactions: transactions });
+    });
+
+    // Clear the list of transactions
+    app.get('/sync/reset', function(req, res) {
+      transactions = [];
+      res.send('Cleared transaction list');
+    });
+
     // Listen on the provided port, defaulting to 8000
     var server = app.listen(port || 8000, function() {
       var serverPort = server.address().port;
