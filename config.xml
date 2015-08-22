@@ -9,5 +9,6 @@
     <engine name="ios" spec="^3.9.0" />
     <engine name="browser" spec="^3.6.0" />
     <plugin name="cordova-plugin-console" spec="^1.0.1" />
+    <plugin name="cordova-plugin-whitelist" spec="^1.0.0" />
     <plugin name="io.litehelpers.cordova.sqlite" spec="^0.7.7" />
 </widget>
