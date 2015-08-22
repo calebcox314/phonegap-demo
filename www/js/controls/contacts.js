@@ -74,7 +74,7 @@ define(function(require, exports, module) {
       // Send the current transactions to the server
       var app = require('app');
       app.transactionMonitor.sync(function(transactions) {
-        return $.ajax('/sync', {
+        return $.ajax('https://phonegap-demo.herokuapp.com/sync', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
