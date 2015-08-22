@@ -44,9 +44,9 @@ module.exports = function(grunt) {
       next();
     });
 
-    // The core of this express server is a simple static file server. It serves BOTH the www/ and platforms/browser/www/
-    // directories to the same /browser/www/ route. This efficiently emulates the behavior of "cordova serve" without the
-    // inconvenience of having to run "cordova prepare browser" after every file modification.
+    // The core of this express server is a simple static file server. It serves BOTH the www/ and platforms/<platform>/www/
+    // directories to the same /<platform>/www/ route. This efficiently emulates the behavior of "cordova serve" without the
+    // inconvenience of having to run "cordova prepare <platform>" after every file modification.
     var path = require('path');
     var projectRoot = __dirname;
     var wwwRoute = express.static(path.join(projectRoot, 'www'));
