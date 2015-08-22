@@ -8,7 +8,7 @@ define(['jquery'], function($) {
       autoInitializePage: false,
       linkBindingEnabled: false,
       hashListeningEnabled: false,
-      pushStateEnabled: false
+      pushStateEnabled: false,
     });
   });
 });

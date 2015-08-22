@@ -17,9 +17,9 @@ define(function(require, exports, module) {
       can.extend(true, protoProps, {
         define: {
           isSaved: {
-            serialize: false
-          }
-        }
+            serialize: false,
+          },
+        },
       });
 
       var Model = this._super.apply(this, arguments);
@@ -30,9 +30,11 @@ define(function(require, exports, module) {
             // Generate a new UUID
             return chance.guid();
           },
-          enumerable: true
+
+          enumerable: true,
         });
       }
+
       return Model;
     },
 
@@ -66,10 +68,12 @@ define(function(require, exports, module) {
       return db.create(this.getTableData(), params).then(function(insertId) {
         // The object returned here will augment the model's attributes
         var obj = {};
+
         // If the model did not have an explicit primary key, record the generated one
         if (typeof params[primaryKey] === 'undefined') {
           obj[primaryKey] = insertId;
         }
+
         return obj;
       }).done(success).fail(error);
     },
@@ -86,9 +90,9 @@ define(function(require, exports, module) {
       return {
         name: this._fullName,
         primaryKey: this.id,
-        attributes: this.attributes
+        attributes: this.attributes,
       };
-    }
+    },
   }, {
     isSaved: false,
 
@@ -111,6 +115,6 @@ define(function(require, exports, module) {
     // checking the "isSaved" flag.
     isNew: function() {
       return !this.isSaved;
-    }
+    },
   });
 });

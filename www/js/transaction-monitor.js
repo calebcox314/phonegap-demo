@@ -84,6 +84,7 @@ define(function(require) {
         // Pause transaction monitoring while applying transactions so that the
         // model changes will not be recorded as new transactions
         _this.monitoring = false;
+
         // Apply transactions one at a time, starting the next transaction
         // immediately after the previous one finishes
         var promise = can.Deferred().resolve();
@@ -92,6 +93,7 @@ define(function(require) {
             return transaction.apply();
           });
         });
+
         // Re-enable transaction monitoring after all transactions are applied
         promise.always(function() {
           _this.monitoring = true;
@@ -102,6 +104,6 @@ define(function(require) {
           transaction.destroy();
         });
       });
-    }
+    },
   });
 });

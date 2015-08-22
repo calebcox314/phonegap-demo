@@ -51,7 +51,7 @@ define(function(require, exports, module) {
     },
 
     hasher: null, // the hash function
-    map: null // the map
+    map: null, // the map
   });
 
   // Add the following Map functions to the HashMap

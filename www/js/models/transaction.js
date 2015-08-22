@@ -5,7 +5,7 @@ define(function(require) {
   var operationMap = new Map([
     ['created', 'create'],
     ['updated', 'update'],
-    ['destroyed', 'destroy']
+    ['destroyed', 'destroy'],
   ]);
 
   var can = require('can');
@@ -16,15 +16,15 @@ define(function(require) {
       transactionId: 'int|primarykey|autoincrement|unique',
       modelName: 'string',
       operation: 'string',
-      params: 'string'
+      params: 'string',
     },
     dbAttributes: {
-      transactionId: 'int|primarykey|autoincrement|unique'
+      transactionId: 'int|primarykey|autoincrement|unique',
     },
     defaults: {
       modelName: '',
       operation: '',
-      params: {}
+      params: {},
     },
 
     /*
@@ -38,9 +38,9 @@ define(function(require) {
       return new Transaction({
         modelName: model.constructor.shortName,
         operation: operationMap.get(event.type),
-        params: model.serialize()
+        params: model.serialize(),
       });
-    }
+    },
   }, {
     define: {
       // The "params" attribute is JSON data, but should
@@ -50,18 +50,20 @@ define(function(require) {
         serialize: function(value) {
           return JSON.stringify(value);
         },
+
         // Convert the params attribute from its serialized form
         type: function(raw) {
           if (typeof raw === 'string') {
             try {
               return JSON.parse(raw);
-            } catch(e) {
+            } catch (e) {
               return {};
             }
           }
+
           return raw;
-        }
-      }
+        },
+      },
     },
 
     /*
@@ -89,39 +91,33 @@ define(function(require) {
         if (!model) {
           model = new Model(attrs);
           return model.save();
-        }
-        else {
+        } else {
           console.warn('Cannot create existing model with id ' + id);
           dfd.resolve();
         }
-      }
-      else if (operation === 'update') {
+      } else if (operation === 'update') {
         // Find the model and update it
         if (model) {
           model.attr(attrs);
           return model.save();
-        }
-        else {
+        } else {
           console.warn('Cannot update non-existent model with id ' + id);
           dfd.resolve();
         }
-      }
-      else if (operation === 'destroy') {
+      } else if (operation === 'destroy') {
         // Find the model and destroy it
         if (model) {
           return model.destroy();
-        }
-        else {
+        } else {
           console.warn('Cannot destroy non-existent model with id ' + id);
           dfd.resolve();
         }
-      }
-      else {
+      } else {
         return dfd.reject(new Error('Cannot apply transaction with unrecognized operation "' + operation + '"'));
       }
 
       return dfd.promise();
-    }
+    },
   });
   return Transaction;
 });

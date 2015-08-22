@@ -4,6 +4,7 @@ define(function(require, exports, module) {
   var $ = require('jquery');
   require('jquery-mobile');
   var can = require('can');
+
   // Load the CanJS proxy plugin
   require('can/construct/proxy');
   var Controls = require('controls');
@@ -73,6 +74,6 @@ define(function(require, exports, module) {
       }).fail(function() {
         console.error('Failed to install models!');
       });
-    }
+    },
   };
 });

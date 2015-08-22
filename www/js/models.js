@@ -6,6 +6,6 @@ define(function(require, exports, module) {
 
   module.exports = {
     Contact: require('models/contact'),
-    Transaction: require('models/transaction')
+    Transaction: require('models/transaction'),
   };
 });

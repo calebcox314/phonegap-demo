@@ -25,20 +25,22 @@ define(function(require, exports, module) {
      * @param {string|null} [pattern] The page's route pattern or null to use the page id
      */
     registerPage: function(page, parent, pattern) {
-     // The relative pattern defaults to the page id
+      // The relative pattern defaults to the page id
       var relativePattern = pattern || page;
+
       // The absolute pattern is produced by prefixing the relative pattern with the parent's absolute pattern
       var absolutePattern = parent === null ? relativePattern : pageRegistry.getByKey(parent).pattern + '/' + relativePattern;
+
       // Store the new page in the page registry
       pageRegistry.add({
         page: page,
         parent: parent,
-        pattern: absolutePattern
+        pattern: absolutePattern,
       });
 
       // Register the CanJS route associated with this page
       can.route(absolutePattern, {
-        page: page
+        page: page,
       });
     },
 
@@ -75,7 +77,7 @@ define(function(require, exports, module) {
     openPage: function(page, routeData) {
       // Merge the page into the route attributes
       var routeAttrs = can.extend({
-        page: page
+        page: page,
       }, routeData);
 
       // Calculate the new URL based on the route attributes, then navigate to it
@@ -98,6 +100,6 @@ define(function(require, exports, module) {
      */
     getOpenPage: function() {
       return can.route.attr('page');
-    }
+    },
   };
 });

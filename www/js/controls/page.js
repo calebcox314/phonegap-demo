@@ -18,9 +18,11 @@ define(function(require, exports, module) {
     // The unique id of this page
     // It should always be overriden in derived page controls
     pageId: null,
+
     // The id of this page's parent in the navigation heirarchy
     // It shoud be overriden in derived page controls unless the page is a root page
     parentId: null,
+
     // The route attribute that this control will bind to
     // It may be overriden in derived page controls
     routeAttr: null,
@@ -31,7 +33,7 @@ define(function(require, exports, module) {
       var PageControl = this._super.apply(this, arguments);
       Navigator.registerPage(PageControl.pageId, PageControl.parentId, PageControl.routeAttr ? ':' + PageControl.routeAttr : null);
       return PageControl;
-    }
+    },
   }, {
     // Initialize the control
     init: function(element) {
@@ -48,8 +50,9 @@ define(function(require, exports, module) {
 
       // Call the Control constructor
       return this._super.apply(this, arguments);
-    }
+    },
   });
+
   // Add event functionality to the Page control
   can.extend(Page.prototype, can.event);
 });

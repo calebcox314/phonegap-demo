@@ -6,25 +6,21 @@ module.exports = function(grunt) {
   // Project configuration
   var srcFiles = ['Gruntfile.js', 'www/js/**/*.js'];
   grunt.initConfig({
-
     jshint: {
       src: srcFiles,
       options: {
-        jshintrc: true
-      }
+        jshintrc: true,
+      },
     },
 
     jscs: {
       src: srcFiles,
-      options: {
-        preset: 'airbnb'
-      }
     },
 
     watch: {
       files: srcFiles,
-      tasks: ['jshint', 'jscs']
-    }
+      tasks: ['jshint', 'jscs'],
+    },
   });
 
   // Load grunt plugins
@@ -70,13 +66,14 @@ module.exports = function(grunt) {
           lastSyncTimestamp: now,
           transactionLog: transactions.filter(function(transaction) {
             return transaction.timestamp === null || transaction.timestamp > lastSyncTimestamp;
-          })
-        }
+          }),
+        },
       });
       req.body.transactionLog.forEach(function(transaction) {
         transaction.timestamp = now;
         transactions.push(transaction);
       });
+
       console.log(transactions);
     });
 
