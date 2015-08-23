@@ -46,6 +46,23 @@ module.exports = function(grunt) {
       next();
     });
 
+    // Serve the index page after detecting the user's platform
+    var parser = require('ua-parser-js');
+    app.get('/', function(req, res) {
+      var platform;
+      var ua = parser(req.get('user-agent'));
+      if (ua.os.name === 'iOS') {
+        platform = 'ios';
+      } else if (ua.os.name === 'Android') {
+        platform = 'android';
+      } else {
+        platform = 'browser';
+      }
+
+      // Redirect to the index page of the detected platform
+      res.redirect('/' + platform + '/www/');
+    });
+
     // The core of this express server is a simple static file server. It serves BOTH the www/ and platforms/<platform>/www/
     // directories to the same /<platform>/www/ route. This efficiently emulates the behavior of "cordova serve" without the
     // inconvenience of having to run "cordova prepare <platform>" after every file modification.
