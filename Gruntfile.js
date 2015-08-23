@@ -52,10 +52,15 @@ module.exports = function(grunt) {
     var path = require('path');
     var projectRoot = __dirname;
     var wwwRoute = express.static(path.join(projectRoot, 'www'));
-    ['browser', 'ios', 'android'].forEach(function(platform) {
-      var platformPath = '/' + platform + '/www/';
+    var platforms = [
+      { name: 'browser', wwwPath: 'www' },
+      { name: 'ios', wwwPath: 'www' },
+      { name: 'android', wwwPath: path.join('assets', 'www') },
+    ];
+    platforms.forEach(function(platform) {
+      var platformPath = '/' + platform.name + '/www/';
       app.use(platformPath, wwwRoute);
-      app.use(platformPath, express.static(path.join(projectRoot, 'platforms', platform, 'www')));
+      app.use(platformPath, express.static(path.join(projectRoot, 'platforms', platform.name, platform.wwwPath)));
     });
 
     var transactions = [];
