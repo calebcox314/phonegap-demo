@@ -9,7 +9,7 @@ define(function(require, exports, module) {
       ['string', 'TEXT'],
       ['int', 'INTEGER'],
       ['float', 'REAL'],
-      ['default', 'TEXT']
+      ['default', 'TEXT'],
     ]),
 
     // Maps attribute modifiers to SQLite type modifiers
@@ -17,7 +17,7 @@ define(function(require, exports, module) {
       ['primarykey', 'PRIMARY KEY'],
       ['autoincrement', 'AUTOINCREMENT'],
       ['unique', 'UNIQUE'],
-      ['notnull', 'NOT NULL']
+      ['notnull', 'NOT NULL'],
     ]),
 
     init: function() {
@@ -42,19 +42,21 @@ define(function(require, exports, module) {
               if (!baseType) {
                 deferred.reject(new Error('Unrecognized attribute base type "' + type + '"'));
               }
+
               return baseType;
-            }
-            else {
+            } else {
               // All other segments represent type modifiers
               var modifier = _this.sqliteModifierMap.get(type);
               if (!modifier) {
                 deferred.reject(new Error('Unrecognized attribute type modifier "' + type + '"'));
               }
+
               return modifier;
             }
           }).join(' ');
           columns.push('"' + attributeName + '" ' + sqliteType);
         });
+
         if (deferred.state() === 'rejected') {
           // An error occured, so do not attempt to create the table
           return;
@@ -76,12 +78,14 @@ define(function(require, exports, module) {
           values.push(value);
           conditions.push('"' + key + '"=?');
         });
+
         var conditionClause = conditions.length ? ' WHERE ' + conditions.join(' AND ') : '';
         tx.executeSql('SELECT * FROM "' + tableData.name + '"' + conditionClause, values, function(tx, result) {
           var rows = [];
           for (var i = 0; i < result.rows.length; ++i) {
             rows.push(result.rows.item(i));
           }
+
           deferred.resolve(rows);
         }, deferred.reject);
       }, deferred.reject);
@@ -100,10 +104,12 @@ define(function(require, exports, module) {
             // Skip attributes without a value
             return;
           }
+
           values.push(value);
           fields.push('"' + key + '"');
           placeholders.push('?');
         });
+
         var valuesClause = ' (' + fields.join(',') + ') VALUES (' + placeholders.join(',') + ')';
         tx.executeSql('INSERT INTO "' + tableData.name + '"' + (fields.length === 0 ? ' DEFAULT VALUES' : valuesClause), values, function(tx, result) {
           deferred.resolve(result.insertId);
@@ -121,6 +127,7 @@ define(function(require, exports, module) {
           values.push(attrs[key]);
           assignments.push('"' + key + '"=?');
         });
+
         values.push(id);
         var assignmentsClause = assignments.join(', ');
         tx.executeSql('UPDATE "' + tableData.name + '" SET ' + assignmentsClause + ' WHERE ' + tableData.primaryKey + '=?', values, function(tx, result) {
@@ -142,7 +149,7 @@ define(function(require, exports, module) {
 
     transaction: function(callback) {
       return this.db.transaction(callback);
-    }
+    },
   };
 
   Database.init();

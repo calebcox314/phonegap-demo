@@ -12,7 +12,7 @@ define(function(require, exports, module) {
   module.exports = can.Control.extend({
     // The unique id of the template used to render the control
     // It should always be overriden in derived controls
-    template: null
+    template: null,
   }, {
     init: function(element) {
       // This data will be available to the template
@@ -29,6 +29,6 @@ define(function(require, exports, module) {
       // Pass this.scope Map as the template data
       var fragment = can.view(this.constructor.template, this.scope);
       this.element.html(fragment);
-    }
+    },
   });
 });

@@ -6,25 +6,21 @@ module.exports = function(grunt) {
   // Project configuration
   var srcFiles = ['Gruntfile.js', 'www/js/**/*.js'];
   grunt.initConfig({
-
     jshint: {
       src: srcFiles,
       options: {
-        jshintrc: true
-      }
+        jshintrc: true,
+      },
     },
 
     jscs: {
       src: srcFiles,
-      options: {
-        preset: 'airbnb'
-      }
     },
 
     watch: {
       files: srcFiles,
-      tasks: ['jshint', 'jscs']
-    }
+      tasks: ['jshint', 'jscs'],
+    },
   });
 
   // Load grunt plugins
@@ -39,8 +35,10 @@ module.exports = function(grunt) {
 
     var express = require('express');
     var bodyParser = require('body-parser');
+    var cors = require('cors');
     var app = express();
     app.use(bodyParser.json()); // for parsing application/json
+    app.use(cors()); // for enabling CORS
 
     // Log all GET requests
     app.get('*', function(req, res, next) {
@@ -48,16 +46,38 @@ module.exports = function(grunt) {
       next();
     });
 
-    // The core of this express server is a simple static file server. It serves BOTH the www/ and platforms/browser/www/
-    // directories to the same /browser/www/ route. This efficiently emulates the behavior of "cordova serve" without the
-    // inconvenience of having to run "cordova prepare browser" after every file modification.
+    // Serve the index page after detecting the user's platform
+    var parser = require('ua-parser-js');
+    app.get('/', function(req, res) {
+      var platform;
+      var ua = parser(req.get('user-agent'));
+      if (ua.os.name === 'iOS') {
+        platform = 'ios';
+      } else if (ua.os.name === 'Android') {
+        platform = 'android';
+      } else {
+        platform = 'browser';
+      }
+
+      // Redirect to the index page of the detected platform
+      res.redirect('/' + platform + '/www/');
+    });
+
+    // The core of this express server is a simple static file server. It serves BOTH the www/ and platforms/<platform>/www/
+    // directories to the same /<platform>/www/ route. This efficiently emulates the behavior of "cordova serve" without the
+    // inconvenience of having to run "cordova prepare <platform>" after every file modification.
     var path = require('path');
     var projectRoot = __dirname;
     var wwwRoute = express.static(path.join(projectRoot, 'www'));
-    ['browser', 'ios', 'android'].forEach(function(platform) {
-      var platformPath = '/' + platform + '/www/';
+    var platforms = [
+      { name: 'browser', wwwPath: 'www' },
+      { name: 'ios', wwwPath: 'www' },
+      { name: 'android', wwwPath: path.join('assets', 'www') },
+    ];
+    platforms.forEach(function(platform) {
+      var platformPath = '/' + platform.name + '/www/';
       app.use(platformPath, wwwRoute);
-      app.use(platformPath, express.static(path.join(projectRoot, 'platforms', platform, 'www')));
+      app.use(platformPath, express.static(path.join(projectRoot, 'platforms', platform.name, platform.wwwPath)));
     });
 
     var transactions = [];
@@ -70,14 +90,26 @@ module.exports = function(grunt) {
           lastSyncTimestamp: now,
           transactionLog: transactions.filter(function(transaction) {
             return transaction.timestamp === null || transaction.timestamp > lastSyncTimestamp;
-          })
-        }
+          }),
+        },
       });
       req.body.transactionLog.forEach(function(transaction) {
         transaction.timestamp = now;
         transactions.push(transaction);
       });
+
       console.log(transactions);
+    });
+
+    // Print the list of transactions
+    app.get('/sync/dump', function(req, res) {
+      res.json({ transactions: transactions });
+    });
+
+    // Clear the list of transactions
+    app.get('/sync/reset', function(req, res) {
+      transactions = [];
+      res.send('Cleared transaction list');
     });
 
     // Listen on the provided port, defaulting to 8000

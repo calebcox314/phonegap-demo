@@ -3,6 +3,6 @@ define(function(require, exports, module) {
 
   module.exports = {
     Contacts: require('controls/contacts'),
-    EditContact: require('controls/edit-contact')
+    EditContact: require('controls/edit-contact'),
   };
 });

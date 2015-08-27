@@ -13,7 +13,7 @@ define(function(require, exports, module) {
   var models = require('models');
   module.exports = Page.extend('Contacts', {
     pageId: 'contacts',
-    template: 'template-contacts'
+    template: 'template-contacts',
   }, {
     // Initialize the control
     init: function(element) {
@@ -44,9 +44,10 @@ define(function(require, exports, module) {
     '.create click': function() {
       // Open a new contact for editing
       Navigator.openPage('contact', {
-        contactId: 'new'
+        contactId: 'new',
       });
     },
+
     '.generate click': function() {
       // Generate a new contact with randomly generated data
       var nameParts = chance.name().split(' ');
@@ -54,10 +55,11 @@ define(function(require, exports, module) {
         firstName: nameParts[0],
         lastName: nameParts[1],
         emailAddress: nameParts.join('.').toLowerCase() + '@gmail.com',
-        phoneNumber: chance.phone()
+        phoneNumber: chance.phone(),
       });
       contact.save();
     },
+
     '.purge click': function() {
       // Delete all contacts in series
       var promise = can.Deferred().resolve();
@@ -67,21 +69,22 @@ define(function(require, exports, module) {
         });
       });
     },
+
     '.sync click': function() {
       // Send the current transactions to the server
       var app = require('app');
       app.transactionMonitor.sync(function(transactions) {
-        return $.ajax('/sync', {
+        return $.ajax('https://phonegap-demo.herokuapp.com/sync', {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
           },
           data: JSON.stringify({
             lastSyncTimestamp: window.localStorage.getItem('lastSyncTimestamp'),
             transactionLog: transactions.map(function(transaction) {
               return transaction.serialize();
-            })
-          })
+            }),
+          }),
         }).then(function(response) {
           window.localStorage.setItem('lastSyncTimestamp', response.data.lastSyncTimestamp);
           return models.Transaction.models(response.data.transactionLog);
@@ -91,12 +94,14 @@ define(function(require, exports, module) {
         console.log(err);
       });
     },
+
     '.contact click': function(element) {
       // The contact's id is stored in the data-id attribute on the .contact element
       var contactId = $(element).data('id');
+
       // Open the clicked contact for editing
       Navigator.openPage('contact', {
-        contactId: contactId
+        contactId: contactId,
       });
     },
 
@@ -107,6 +112,6 @@ define(function(require, exports, module) {
      */
     refresh: function() {
       this.$listview.listview('refresh');
-    }
+    },
   });
 });

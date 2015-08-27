@@ -12,17 +12,17 @@ define(function(require, exports, module) {
       firstName: 'string',
       lastName: 'string',
       emailAddress: 'string',
-      phoneNumber: 'string'
+      phoneNumber: 'string',
     },
     defaults: {
       firstName: '',
       lastName: '',
       emailAddress: null,
-      phoneNumber: null
-    }
+      phoneNumber: null,
+    },
   }, {
     name: can.compute(function() {
       return this.attr('firstName') + ' ' + this.attr('lastName');
-    })
+    }),
   });
 });

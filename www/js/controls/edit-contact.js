@@ -12,7 +12,7 @@ define(function(require, exports, module) {
     pageId: 'contact',
     parentId: 'contacts',
     routeAttr: 'contactId',
-    template: 'template-contact'
+    template: 'template-contact',
   }, {
     // Initialize the control
     init: function(element) {
@@ -67,6 +67,7 @@ define(function(require, exports, module) {
       // Prevent the default submit behavior
       return false;
     },
+
     '.cancel click': function() {
       this.revertContact();
       Navigator.openParentPage();
@@ -80,21 +81,20 @@ define(function(require, exports, module) {
       if (contactId === 'new') {
         // Create a new contact to edit
         contact = new models.Contact();
-      }
-      else {
+      } else {
         // Lookup the contact in the global list by its contact
         contact = models.Contact.store[contactId];
         if (contact) {
           // Save a copy of the contact's attributes so that it can be reverted later if necessary
           contact.backup();
-        }
-        else {
+        } else {
           // No contact has that contactId
           console.error('Attempting to navigate to a non-existent contact!');
           Navigator.openParentPage();
         }
       }
+
       this.setContact(contact);
-    }
+    },
   });
 });

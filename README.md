@@ -3,29 +3,44 @@ phonegap-demo
 
 PhoneGap local storage demonstration app
 
-To install:
+To install and run the app:
 ```sh
-# Get the latest stable release of cordova
-$ sudo npm install -g cordova
+# Install required command line tools (may require root access)
+$ [sudo] npm install -g cordova bower
 
-# Make sure Bower is installed:
-$ npm install -g bower
-
-# clone this project:
-$ git clone https://github.com/calebcox314/phonegap-demo.git
-
-# install Bower components
+# Clone this repo
+$ git clone https://github.com/canac/phonegap-demo.git
 $ cd phonegap-demo
+
+# Install Bower components
 $ bower install
 
-# initialze Cordova
-$ cordova platform add ios
-$ cordova platform add android
+# Prepare for running (installs Cordova platforms and plugins)
+$ cordova prepare
 
-# Build the projects
-$ cordova build 
+# Run in iOS or Android simulator
+$ cordova run ios --emulator
+$ cordova run android --emulator
 
-# now open IOS version in XCode 
-# or run the Android simulator:
-$ cordova emulate android
+# Run on iOS or Android device
+$ cordova run ios --device
+$ cordova run android --device
+```
+
+During development:
+```sh
+# Install required command line tools (may require root access)
+$ [sudo] npm install -g grunt-cli jshint jscs
+# Install dev dependencies used by the Gruntfile
+$ npm install
+
+# Start development server
+$ grunt serve
+# Open app in browser
+$ open http://localhost:8000/browser/www/
+
+# Run JSHint and JSCS on the source files
+grunt
+# Rerun whenever JavaScript files change
+grunt watch
 ```
