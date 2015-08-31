@@ -1,6 +1,8 @@
 phonegap-demo
 =============
 
+[![Code Climate](https://codeclimate.com/github/canac/phonegap-demo/badges/gpa.svg)](https://codeclimate.com/github/canac/phonegap-demo)
+
 PhoneGap local storage demonstration app
 
 To install and run the app:
