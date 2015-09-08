@@ -7,7 +7,7 @@ import 'can/map/define';
 
 // Instantiate a new ChanceJS generator instance for generating UUIDs
 import Chance from 'chance';
-var chance = new Chance();
+const chance = new Chance();
 
 import db from './db';
 
@@ -22,7 +22,7 @@ export default can.Model.extend('LocalModel', {
       },
     });
 
-    var Model = this._super.apply(this, arguments);
+    const Model = this._super.apply(this, arguments);
     if (Model.hasUuid) {
       // For models with a UUID field, the primary key defaults to an automatically generated UUID
       Object.defineProperty(Model.defaults, Model.id, {
@@ -64,10 +64,10 @@ export default can.Model.extend('LocalModel', {
   },
 
   create: function(params, success, error) {
-    var primaryKey = this.id;
+    const primaryKey = this.id;
     return db.create(this.getTableData(), params).then(function(insertId) {
       // The object returned here will augment the model's attributes
-      var obj = {};
+      const obj = {};
 
       // If the model did not have an explicit primary key, record the generated one
       if (typeof params[primaryKey] === 'undefined') {
@@ -98,7 +98,7 @@ export default can.Model.extend('LocalModel', {
 
   save: function() {
     // Call the original "save" function
-    var _this = this;
+    const _this = this;
     return this._super.apply(this, arguments).done(function() {
       // Mark this model as present in the database
       _this.isSaved = true;

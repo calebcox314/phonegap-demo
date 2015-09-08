@@ -9,7 +9,7 @@ import models from '../models';
 
 // Load the ChanceJS library and instantiate a new chance generator instance
 import Chance from 'chance';
-var chance = new Chance();
+const chance = new Chance();
 
 export default Page.extend('Contacts', {
   pageId: 'contacts',
@@ -21,7 +21,7 @@ export default Page.extend('Contacts', {
     this._super.apply(this, arguments);
 
     // Get the global list of all contact models
-    var contacts = this.contacts = models.Contact.list;
+    const contacts = this.contacts = models.Contact.list;
 
     // Initialize the control scope and render it
     this.scope.attr('contacts', contacts);
@@ -32,7 +32,7 @@ export default Page.extend('Contacts', {
     this.$listview.listview();
 
     // Refresh the contacts UI list whenever contacts are added or removed
-    var refresh = this.proxy('refresh');
+    const refresh = this.proxy('refresh');
     contacts.bind('change', refresh);
     contacts.bind('length', refresh);
     refresh();
@@ -50,8 +50,8 @@ export default Page.extend('Contacts', {
 
   '.generate click': function() {
     // Generate a new contact with randomly generated data
-    var nameParts = chance.name().split(' ');
-    var contact = new models.Contact({
+    const nameParts = chance.name().split(' ');
+    const contact = new models.Contact({
       firstName: nameParts[0],
       lastName: nameParts[1],
       emailAddress: nameParts.join('.').toLowerCase() + '@gmail.com',
@@ -62,7 +62,7 @@ export default Page.extend('Contacts', {
 
   '.purge click': function() {
     // Delete all contacts in series
-    var promise = can.Deferred().resolve();
+    let promise = can.Deferred().resolve();
     this.contacts.forEach(function(contact) {
       promise = promise.then(function() {
         return contact.destroy();
@@ -96,7 +96,7 @@ export default Page.extend('Contacts', {
 
   '.contact click': function(element) {
     // The contact's id is stored in the data-id attribute on the .contact element
-    var contactId = $(element).data('id');
+    const contactId = $(element).data('id');
 
     // Open the clicked contact for editing
     Navigator.openPage('contact', {

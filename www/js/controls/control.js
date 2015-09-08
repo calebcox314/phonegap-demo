@@ -26,7 +26,7 @@ export default can.Control.extend({
    */
   render: function() {
     // Pass this.scope Map as the template data
-    var fragment = can.view(this.constructor.template, this.scope);
+    const fragment = can.view(this.constructor.template, this.scope);
     this.element.html(fragment);
   },
 });

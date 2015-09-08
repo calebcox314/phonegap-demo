@@ -29,10 +29,10 @@ export default can.Construct.extend('TransactionMonitor', {
   init: function(options) {
     this.monitoring = true;
 
-    var _this = this;
+    const _this = this;
     this.monitoredModels = new Set(options.monitoredModels);
     this.monitoredModels.forEach(function(modelName) {
-      var Model = models[modelName];
+      const Model = models[modelName];
       if (!Model) {
         throw new Error('Cannot record transactions of non-existent model "' + modelName + '"');
       }
@@ -47,7 +47,7 @@ export default can.Construct.extend('TransactionMonitor', {
 
           // An operation has occured on the model, so create a new transaction
           // model instance to represent it and save it to the database
-          var transaction = models.Transaction.createFromEvent(event, model);
+          const transaction = models.Transaction.createFromEvent(event, model);
           transaction.save();
         });
       });
@@ -77,8 +77,8 @@ export default can.Construct.extend('TransactionMonitor', {
    * @returns {Deferred}
    */
   sync: function(sync) {
-    var _this = this;
-    var sentTransactions = can.makeArray(this.getTransactions());
+    const _this = this;
+    const sentTransactions = can.makeArray(this.getTransactions());
     return sync(sentTransactions).done(function(receivedTransactions) {
       // Pause transaction monitoring while applying transactions so that the
       // model changes will not be recorded as new transactions
@@ -86,7 +86,7 @@ export default can.Construct.extend('TransactionMonitor', {
 
       // Apply transactions one at a time, starting the next transaction
       // immediately after the previous one finishes
-      var promise = can.Deferred().resolve();
+      let promise = can.Deferred().resolve();
       receivedTransactions.forEach(function(transaction) {
         promise = promise.then(function() {
           return transaction.apply();

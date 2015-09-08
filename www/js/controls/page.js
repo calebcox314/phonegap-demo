@@ -13,7 +13,7 @@ import 'can/event';
 import Navigator from '../navigator';
 import Control from './control';
 
-var Page = Control.extend({
+const Page = Control.extend({
   // The unique id of this page
   // It should always be overriden in derived page controls
   pageId: null,
@@ -29,16 +29,16 @@ var Page = Control.extend({
   // Register derived page controls with the Navigator component
   extend: function() {
     // Call the original extend function
-    var PageControl = this._super.apply(this, arguments);
+    const PageControl = this._super.apply(this, arguments);
     Navigator.registerPage(PageControl.pageId, PageControl.parentId, PageControl.routeAttr ? ':' + PageControl.routeAttr : null);
     return PageControl;
   },
 }, {
   // Initialize the control
   init: function(element) {
-    var routeAttr = this.constructor.routeAttr;
+    const routeAttr = this.constructor.routeAttr;
     if (routeAttr) {
-      var _this = this;
+      const _this = this;
       can.route.bind(routeAttr, function(event, value) {
         // Only process if the page is open
         if (Navigator.getOpenPage() === _this.constructor.pageId) {

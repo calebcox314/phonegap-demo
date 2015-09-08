@@ -1,6 +1,6 @@
 /*
  * Export a singleton that manages navigation for the application. It is intended to act as a
- * higher-level to can.route and provides the application an easy way to navigate between various
+ * higher-level to can.route and provides the application an easy way to navigate between constious
  * pages as the user moves through the application.
  */
 
@@ -13,9 +13,9 @@ import HashMap from './util/HashMap';
 // A private map of all the pages used by the application
 // This hash map is indexed by the "page" property
 // It will be populated through calls to registerPage
-var pageRegistry = new HashMap(function(page) { return page.page; });
+const pageRegistry = new HashMap(function(page) { return page.page; });
 
-var Navigator = {
+const Navigator = {
   /*
    * Register a page with the application navigator. This will initialize routing for the page.
    *
@@ -25,10 +25,10 @@ var Navigator = {
    */
   registerPage: function(page, parent, pattern) {
     // The relative pattern defaults to the page id
-    var relativePattern = pattern || page;
+    const relativePattern = pattern || page;
 
     // The absolute pattern is produced by prefixing the relative pattern with the parent's absolute pattern
-    var absolutePattern = parent === null ? relativePattern : pageRegistry.getByKey(parent).pattern + '/' + relativePattern;
+    const absolutePattern = parent === null ? relativePattern : pageRegistry.getByKey(parent).pattern + '/' + relativePattern;
 
     // Store the new page in the page registry
     pageRegistry.add({
@@ -75,12 +75,12 @@ var Navigator = {
    */
   openPage: function(page, routeData) {
     // Merge the page into the route attributes
-    var routeAttrs = can.extend({
+    const routeAttrs = can.extend({
       page: page,
     }, routeData);
 
     // Calculate the new URL based on the route attributes, then navigate to it
-    var newUrl = can.route.url(routeAttrs);
+    const newUrl = can.route.url(routeAttrs);
     window.location = newUrl;
   },
 
@@ -88,7 +88,7 @@ var Navigator = {
    * Navigate to the current page's parent.
    */
   openParentPage: function() {
-    var currentPage = pageRegistry.getByKey(this.getOpenPage());
+    const currentPage = pageRegistry.getByKey(this.getOpenPage());
     this.openPage(currentPage.parent);
   },
 

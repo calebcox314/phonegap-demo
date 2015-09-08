@@ -8,7 +8,7 @@
 
 import can from 'can';
 
-var HashMap = can.Construct.extend({
+const HashMap = can.Construct.extend({
   /*
    * HashMap constructor
    *

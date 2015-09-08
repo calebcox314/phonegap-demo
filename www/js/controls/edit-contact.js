@@ -37,7 +37,7 @@ export default Page.extend('EditContact', {
    * Save all changes made to the contact and stop editing the contact.
    */
   saveContact: function() {
-    var contact = this.getContact();
+    const contact = this.getContact();
     if (contact.isNew() || contact.isDirty()) {
       contact.save();
     }
@@ -76,7 +76,7 @@ export default Page.extend('EditContact', {
    * Listen for changes to the page's registered route attribute, "contactId" in this case.
    */
   routeChange: function(event, contactId) {
-    var contact = null;
+    let contact = null;
     if (contactId === 'new') {
       // Create a new contact to edit
       contact = new models.Contact();

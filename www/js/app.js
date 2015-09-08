@@ -13,7 +13,7 @@ import Models from './models';
 import Navigator from './navigator';
 import TransactionMonitor from './transaction-monitor';
 
-var app = {
+const app = {
   // Initialize the applications
   initialize: function() {
     // Bind to startup events
@@ -31,7 +31,7 @@ var app = {
   // Load all models
   loadModels: function() {
     return can.when.apply(can, can.map(Models, function(Model, name) {
-      var dfd = Model.findAll({});
+      const dfd = Model.findAll({});
       Model.list = new Model.List(dfd);
       Model.bind('created', function(event, model) {
         Model.list.push(model);
@@ -55,8 +55,8 @@ var app = {
 
         // Create all application control instances
         [Controls.Contacts, Controls.EditContact].forEach(function(Control) {
-          var controlName = can.hyphenate(Control.fullName).toLowerCase();
-          var control = new Control('[data-control=' + controlName + ']', {}); // jshint ignore:line
+          const controlName = can.hyphenate(Control.fullName).toLowerCase();
+          const control = new Control('[data-control=' + controlName + ']', {}); // jshint ignore:line
         });
 
         // Initialize the jQuery Mobile widgets

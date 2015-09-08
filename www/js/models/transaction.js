@@ -1,7 +1,7 @@
 'use strict';
 
 // Maps event type to operation name
-var operationMap = new Map([
+const operationMap = new Map([
   ['created', 'create'],
   ['updated', 'update'],
   ['destroyed', 'destroy'],
@@ -11,7 +11,7 @@ import can from 'can';
 import LocalModel from '../local-model';
 import models from '../models';
 
-var Transaction = LocalModel.extend('Transaction', {
+const Transaction = LocalModel.extend('Transaction', {
   id: 'transactionId',
   attributes: {
     transactionId: 'int|primarykey|autoincrement|unique',
@@ -73,19 +73,19 @@ var Transaction = LocalModel.extend('Transaction', {
    * @returns {Deferred}
    */
   apply: function() {
-    var dfd = can.Deferred();
+    const dfd = can.Deferred();
 
-    var modelName = this.attr('modelName');
-    var Model = models[modelName];
+    const modelName = this.attr('modelName');
+    const Model = models[modelName];
     if (!Model) {
       return dfd.reject(new Error('Cannot apply transaction to non-existent model "' + this.attr('modelName') + '"')).promise();
     }
 
-    var attrs = this.attr('params');
-    var id = attrs[Model.id];
+    const attrs = this.attr('params');
+    const id = attrs[Model.id];
 
-    var operation = this.attr('operation');
-    var model = Model.store[id];
+    const operation = this.attr('operation');
+    let model = Model.store[id];
     if (operation === 'create') {
       // Create a new model
       if (!model) {
