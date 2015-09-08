@@ -1,8 +1,6 @@
-define(function(require, exports, module) {
-  'use strict';
+'use strict';
 
-  module.exports = {
-    Contacts: require('controls/contacts'),
-    EditContact: require('controls/edit-contact'),
-  };
-});
+import Contacts from './controls/contacts';
+import EditContact from './controls/edit-contact';
+
+export default { Contacts, EditContact };

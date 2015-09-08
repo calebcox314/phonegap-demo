@@ -2,11 +2,24 @@
   "name": "phonegap-demo",
   "private": true,
   "dependencies": {
-    "canjs": "~2.1.4",
+    "canjs": "~2.2.7",
     "chance": "~0.7.3",
     "es6-collections": "~0.5.2",
     "jquery": "~1.10.2",
     "jquery-mobile": "http://jquerymobile.com/resources/download/jquery.mobile-1.4.5.zip",
     "steal": "~0.10.5"
+  },
+  "system": {
+    "bowerIgnore": [
+      "es6-collections",
+      "jquery-mobile"
+    ],
+    "map": {
+      "can": "bower_components/canjs/amd/can"
+    },
+    "paths": {
+      "es6-collections": "bower_components/es6-collections/index.js",
+      "jquery-mobile": "bower_components/jquery-mobile/jquery.mobile-1.4.5.js"
+    }
   }
 }
