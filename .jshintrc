@@ -6,8 +6,7 @@
   "freeze": true,
   "futurehostile": true,
   "globals": {
-    "cordova": false,
-    "define": false
+    "cordova": false
   },
   "latedef": true,
   "noarg": true,
@@ -19,6 +18,7 @@
   "undef": true,
   "unused": "vars",
   "esnext": true,
+  "globalstrict": true,
   "browser": true,
   "devel": true
 }
