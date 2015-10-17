@@ -18,7 +18,7 @@ export default Page.extend('Contacts', {
   // Initialize the control
   init(element) {
     // Call the Page constructor
-    this._super.apply(this, arguments);
+    this._super(...arguments);
 
     // Get the global list of all contact models
     const contacts = this.contacts = models.Contact.list;

@@ -22,7 +22,7 @@ export default can.Model.extend('LocalModel', {
       },
     });
 
-    const Model = this._super.apply(this, arguments);
+    const Model = this._super(...arguments);
     if (Model.hasUuid) {
       // For models with a UUID field, the primary key defaults to an automatically generated UUID
       Object.defineProperty(Model.defaults, Model.id, {
@@ -94,7 +94,7 @@ export default can.Model.extend('LocalModel', {
 
   save() {
     // Call the original "save" function
-    return this._super.apply(this, arguments).done(() => {
+    return this._super(this, ...arguments).done(() => {
       // Mark this model as present in the database
       this.isSaved = true;
     });

@@ -16,7 +16,7 @@ export default Page.extend('EditContact', {
   // Initialize the control
   init(element) {
     // Call the Page constructor
-    this._super.apply(this, arguments);
+    this._super(...arguments);
 
     // Listen for changes to the route
     this.on('route.change', this.proxy('routeChange'));

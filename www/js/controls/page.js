@@ -29,7 +29,7 @@ const Page = Control.extend({
   // Register derived page controls with the Navigator component
   extend() {
     // Call the original extend function
-    const PageControl = this._super.apply(this, arguments);
+    const PageControl = this._super(...arguments);
     Navigator.registerPage(PageControl.pageId, PageControl.parentId, PageControl.routeAttr ? ':' + PageControl.routeAttr : null);
     return PageControl;
   },
@@ -47,7 +47,7 @@ const Page = Control.extend({
     }
 
     // Call the Control constructor
-    return this._super.apply(this, arguments);
+    return this._super(...arguments);
   },
 });
 

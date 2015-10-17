@@ -23,12 +23,12 @@ const app = {
   // Install the application
   install() {
     // Install all models
-    return can.when.apply(can, can.map(Models, (Model, name) => Model.install()));
+    return can.when(...can.map(Models, (Model, name) => Model.install()));
   },
 
   // Load all models
   loadModels() {
-    return can.when.apply(can, can.map(Models, (Model, name) => {
+    return can.when(...can.map(Models, (Model, name) => {
       const dfd = Model.findAll({});
       Model.list = new Model.List(dfd);
       Model.bind('created', (event, model) => Model.list.push(model));

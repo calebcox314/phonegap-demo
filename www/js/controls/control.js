@@ -18,7 +18,7 @@ export default can.Control.extend({
     this.scope = new can.Map();
 
     // Call the can.Control constructor
-    return this._super.apply(this, arguments);
+    return this._super(...arguments);
   },
 
   /*
