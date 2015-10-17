@@ -13,50 +13,46 @@ import Models from './models';
 import Navigator from './navigator';
 import TransactionMonitor from './transaction-monitor';
 
-var app = {
+const app = {
   // Initialize the applications
-  initialize: function() {
+  initialize() {
     // Bind to startup events
     document.addEventListener('deviceready', this.onDeviceReady, false);
   },
 
   // Install the application
-  install: function() {
+  install() {
     // Install all models
-    return can.when.apply(can, can.map(Models, function(Model, name) {
-      return Model.install();
-    }));
+    return can.when(...can.map(Models, (Model, name) => Model.install()));
   },
 
   // Load all models
-  loadModels: function() {
-    return can.when.apply(can, can.map(Models, function(Model, name) {
-      var dfd = Model.findAll({});
+  loadModels() {
+    return can.when(...can.map(Models, (Model, name) => {
+      const dfd = Model.findAll({});
       Model.list = new Model.List(dfd);
-      Model.bind('created', function(event, model) {
-        Model.list.push(model);
-      });
+      Model.bind('created', (event, model) => Model.list.push(model));
 
       // HACK: CanJS does not automatically remove destroyed models from the
       // list without this hack
-      Model.list.bind('remove', function() {});
+      Model.list.bind('remove', () => {});
 
       return dfd;
     }));
   },
 
   // "deviceready" event handler
-  onDeviceReady: function() {
+  onDeviceReady() {
     console.log('Device is ready');
-    app.install().done(function() {
+    app.install().done(() => {
       console.log('Models installed');
-      app.loadModels().done(function() {
+      app.loadModels().done(() => {
         console.log('Models loaded');
 
         // Create all application control instances
-        [Controls.Contacts, Controls.EditContact].forEach(function(Control) {
-          var controlName = can.hyphenate(Control.fullName).toLowerCase();
-          var control = new Control('[data-control=' + controlName + ']', {}); // jshint ignore:line
+        [Controls.Contacts, Controls.EditContact].forEach(Control => {
+          const controlName = can.hyphenate(Control.fullName).toLowerCase();
+          const control = new Control('[data-control=' + controlName + ']', {}); // jshint ignore:line
         });
 
         // Initialize the jQuery Mobile widgets
@@ -69,10 +65,10 @@ var app = {
         app.transactionMonitor = new TransactionMonitor({ monitoredModels: ['Contact'] });
 
         console.log('Finished initialization');
-      }).fail(function() {
+      }).fail(() => {
         console.error('Failed to load models!');
       });
-    }).fail(function() {
+    }).fail(() => {
       console.error('Failed to install models!');
     });
   },

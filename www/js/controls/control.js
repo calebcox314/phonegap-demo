@@ -13,20 +13,20 @@ export default can.Control.extend({
   // It should always be overriden in derived controls
   template: null,
 }, {
-  init: function(element) {
+  init(element) {
     // This data will be available to the template
     this.scope = new can.Map();
 
     // Call the can.Control constructor
-    return this._super.apply(this, arguments);
+    return this._super(...arguments);
   },
 
   /*
    * Render the control and insert it into the control's DOM element
    */
-  render: function() {
+  render() {
     // Pass this.scope Map as the template data
-    var fragment = can.view(this.constructor.template, this.scope);
+    const fragment = can.view(this.constructor.template, this.scope);
     this.element.html(fragment);
   },
 });

@@ -9,19 +9,19 @@ import models from '../models';
 
 // Load the ChanceJS library and instantiate a new chance generator instance
 import Chance from 'chance';
-var chance = new Chance();
+const chance = new Chance();
 
 export default Page.extend('Contacts', {
   pageId: 'contacts',
   template: 'template-contacts',
 }, {
   // Initialize the control
-  init: function(element) {
+  init(element) {
     // Call the Page constructor
-    this._super.apply(this, arguments);
+    this._super(...arguments);
 
     // Get the global list of all contact models
-    var contacts = this.contacts = models.Contact.list;
+    const contacts = this.contacts = models.Contact.list;
 
     // Initialize the control scope and render it
     this.scope.attr('contacts', contacts);
@@ -32,7 +32,7 @@ export default Page.extend('Contacts', {
     this.$listview.listview();
 
     // Refresh the contacts UI list whenever contacts are added or removed
-    var refresh = this.proxy('refresh');
+    const refresh = this.proxy('refresh');
     contacts.bind('change', refresh);
     contacts.bind('length', refresh);
     refresh();
@@ -41,17 +41,17 @@ export default Page.extend('Contacts', {
   /*
    * Respond to control events.
    */
-  '.create click': function() {
+  '.create click'() {
     // Open a new contact for editing
     Navigator.openPage('contact', {
       contactId: 'new',
     });
   },
 
-  '.generate click': function() {
+  '.generate click'() {
     // Generate a new contact with randomly generated data
-    var nameParts = chance.name().split(' ');
-    var contact = new models.Contact({
+    const nameParts = chance.name().split(' ');
+    const contact = new models.Contact({
       firstName: nameParts[0],
       lastName: nameParts[1],
       emailAddress: nameParts.join('.').toLowerCase() + '@gmail.com',
@@ -60,19 +60,17 @@ export default Page.extend('Contacts', {
     contact.save();
   },
 
-  '.purge click': function() {
+  '.purge click'() {
     // Delete all contacts in series
-    var promise = can.Deferred().resolve();
-    this.contacts.forEach(function(contact) {
-      promise = promise.then(function() {
-        return contact.destroy();
-      });
+    let promise = can.Deferred().resolve();
+    this.contacts.forEach(contact => {
+      promise = promise.then(() => contact.destroy());
     });
   },
 
-  '.sync click': function() {
+  '.sync click'() {
     // Send the current transactions to the server
-    app.transactionMonitor.sync(function(transactions) {
+    app.transactionMonitor.sync(transactions => {
       return $.ajax('https://phonegap-demo.herokuapp.com/sync', {
         method: 'POST',
         headers: {
@@ -80,23 +78,21 @@ export default Page.extend('Contacts', {
         },
         data: JSON.stringify({
           lastSyncTimestamp: window.localStorage.getItem('lastSyncTimestamp'),
-          transactionLog: transactions.map(function(transaction) {
-            return transaction.serialize();
-          }),
+          transactionLog: transactions.map(transaction => transaction.serialize()),
         }),
-      }).then(function(response) {
+      }).then(response => {
         window.localStorage.setItem('lastSyncTimestamp', response.data.lastSyncTimestamp);
         return models.Transaction.models(response.data.transactionLog);
       });
-    }).fail(function(err) {
+    }).fail(err => {
       console.error('Sync failed!');
       console.log(err);
     });
   },
 
-  '.contact click': function(element) {
+  '.contact click'(element) {
     // The contact's id is stored in the data-id attribute on the .contact element
-    var contactId = $(element).data('id');
+    const contactId = $(element).data('id');
 
     // Open the clicked contact for editing
     Navigator.openPage('contact', {
@@ -109,7 +105,7 @@ export default Page.extend('Contacts', {
    *
    * This must be called to update the UI whenever items are added to the listview.
    */
-  refresh: function() {
+  refresh() {
     this.$listview.listview('refresh');
   },
 });

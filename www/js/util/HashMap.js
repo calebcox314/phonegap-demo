@@ -8,7 +8,7 @@
 
 import can from 'can';
 
-var HashMap = can.Construct.extend({
+const HashMap = can.Construct.extend({
   /*
    * HashMap constructor
    *
@@ -17,7 +17,7 @@ var HashMap = can.Construct.extend({
    *
    * @param {function} hasher The function that translates values into hashes
    */
-  init: function(hasher) {
+  init(hasher) {
     this.hasher = hasher;
     this.map = new Map();
   },
@@ -25,28 +25,28 @@ var HashMap = can.Construct.extend({
   /*
    * Add a value to the hash map.
    */
-  add: function(value) {
+  add(value) {
     this.map.set(this.hasher(value), value);
   },
 
   /*
    * Lookup and return a value given its key.
    */
-  getByKey: function(key) {
+  getByKey(key) {
     return this.map.get(key);
   },
 
   /*
    * Remove a value from the hash map.
    */
-  deleteByValue: function(value) {
+  deleteByValue(value) {
     this.deleteByKey(this.hasher(value));
   },
 
   /*
    * Remove a value from the hash map given its key.
    */
-  deleteByKey: function(key) {
+  deleteByKey(key) {
     this.map.delete(key);
   },
 
@@ -57,8 +57,8 @@ var HashMap = can.Construct.extend({
 export default HashMap;
 
 // Add the following Map functions to the HashMap
-['clear', 'has', 'keys', 'values', 'entries', 'forEach'].forEach(function(method) {
+['clear', 'has', 'keys', 'values', 'entries', 'forEach'].forEach(method => {
   HashMap.prototype[method] = function() {
-    return this.map[method].apply(this.map, arguments);
+    return this.map[method](...arguments);
   };
 });

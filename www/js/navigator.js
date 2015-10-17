@@ -1,6 +1,6 @@
 /*
  * Export a singleton that manages navigation for the application. It is intended to act as a
- * higher-level to can.route and provides the application an easy way to navigate between various
+ * higher-level to can.route and provides the application an easy way to navigate between constious
  * pages as the user moves through the application.
  */
 
@@ -13,9 +13,9 @@ import HashMap from './util/HashMap';
 // A private map of all the pages used by the application
 // This hash map is indexed by the "page" property
 // It will be populated through calls to registerPage
-var pageRegistry = new HashMap(function(page) { return page.page; });
+const pageRegistry = new HashMap(page => page.page);
 
-var Navigator = {
+const Navigator = {
   /*
    * Register a page with the application navigator. This will initialize routing for the page.
    *
@@ -23,12 +23,12 @@ var Navigator = {
    * @param {string|null} parent The page's parent's id or null if it is a root page
    * @param {string|null} [pattern] The page's route pattern or null to use the page id
    */
-  registerPage: function(page, parent, pattern) {
+  registerPage(page, parent, pattern) {
     // The relative pattern defaults to the page id
-    var relativePattern = pattern || page;
+    const relativePattern = pattern || page;
 
     // The absolute pattern is produced by prefixing the relative pattern with the parent's absolute pattern
-    var absolutePattern = parent === null ? relativePattern : pageRegistry.getByKey(parent).pattern + '/' + relativePattern;
+    const absolutePattern = parent === null ? relativePattern : pageRegistry.getByKey(parent).pattern + '/' + relativePattern;
 
     // Store the new page in the page registry
     pageRegistry.add({
@@ -48,9 +48,9 @@ var Navigator = {
    *
    * @param {string} [defaultPage] The page to navigate to if the current URL does not specify an initial page.
    */
-  activate: function(defaultPage) {
+  activate(defaultPage) {
     // Listen for changes to the "page" route attribute
-    can.route.bind('page', function(event, page) {
+    can.route.bind('page', (event, page) => {
       // The route's page has changed, so tell the jQuery Mobile page container widget to load the new page
       $(':mobile-pagecontainer').pagecontainer('change', '#' + page, { changeHash: false });
     });
@@ -73,22 +73,22 @@ var Navigator = {
    * @param {string} page The page to navigate to.
    * @param {object} [routeData] The can.route attributes associated with the page.
    */
-  openPage: function(page, routeData) {
+  openPage(page, routeData) {
     // Merge the page into the route attributes
-    var routeAttrs = can.extend({
+    const routeAttrs = can.extend({
       page: page,
     }, routeData);
 
     // Calculate the new URL based on the route attributes, then navigate to it
-    var newUrl = can.route.url(routeAttrs);
+    const newUrl = can.route.url(routeAttrs);
     window.location = newUrl;
   },
 
   /*
    * Navigate to the current page's parent.
    */
-  openParentPage: function() {
-    var currentPage = pageRegistry.getByKey(this.getOpenPage());
+  openParentPage() {
+    const currentPage = pageRegistry.getByKey(this.getOpenPage());
     this.openPage(currentPage.parent);
   },
 
@@ -97,7 +97,7 @@ var Navigator = {
    *
    * @returns {string}
    */
-  getOpenPage: function() {
+  getOpenPage() {
     return can.route.attr('page');
   },
 };

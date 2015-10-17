@@ -4,7 +4,7 @@
 
 import $ from 'jquery';
 
-$(document).on('mobileinit', function() {
+$(document).on('mobileinit', () => {
   // Configure jQuery Mobile options
   $.extend($.mobile, {
     ajaxEnabled: false,

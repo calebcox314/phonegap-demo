@@ -14,9 +14,9 @@ export default Page.extend('EditContact', {
   template: 'template-contact',
 }, {
   // Initialize the control
-  init: function(element) {
+  init(element) {
     // Call the Page constructor
-    this._super.apply(this, arguments);
+    this._super(...arguments);
 
     // Listen for changes to the route
     this.on('route.change', this.proxy('routeChange'));
@@ -29,15 +29,15 @@ export default Page.extend('EditContact', {
   /*
    * Revert all changes made to the contact and stop editing the contact.
    */
-  revertContact: function() {
+  revertContact() {
     this.getContact().restore();
   },
 
   /*
    * Save all changes made to the contact and stop editing the contact.
    */
-  saveContact: function() {
-    var contact = this.getContact();
+  saveContact() {
+    const contact = this.getContact();
     if (contact.isNew() || contact.isDirty()) {
       contact.save();
     }
@@ -46,20 +46,20 @@ export default Page.extend('EditContact', {
   /*
    * Return the contact that is currently being edited.
    */
-  getContact: function() {
+  getContact() {
     return this.scope.attr('contact');
   },
   /*
    * Set the contact that is being edited to the provided contact model
    */
-  setContact: function(contact) {
+  setContact(contact) {
     this.scope.attr('contact', contact);
   },
 
   /*
    * Respond to control events.
    */
-  '.save click': function() {
+  '.save click'() {
     this.saveContact();
     Navigator.openParentPage();
 
@@ -67,7 +67,7 @@ export default Page.extend('EditContact', {
     return false;
   },
 
-  '.cancel click': function() {
+  '.cancel click'() {
     this.revertContact();
     Navigator.openParentPage();
   },
@@ -75,8 +75,8 @@ export default Page.extend('EditContact', {
   /*
    * Listen for changes to the page's registered route attribute, "contactId" in this case.
    */
-  routeChange: function(event, contactId) {
-    var contact = null;
+  routeChange(event, contactId) {
+    let contact = null;
     if (contactId === 'new') {
       // Create a new contact to edit
       contact = new models.Contact();

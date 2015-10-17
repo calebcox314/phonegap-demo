@@ -26,28 +26,27 @@ export default can.Construct.extend('TransactionMonitor', {
    * @param {Object} options A configuration hash
    * @param {string} options.monitoredModels[] The names of the models to monitor transactions on
    */
-  init: function(options) {
+  init(options) {
     this.monitoring = true;
 
-    var _this = this;
     this.monitoredModels = new Set(options.monitoredModels);
-    this.monitoredModels.forEach(function(modelName) {
-      var Model = models[modelName];
+    this.monitoredModels.forEach(modelName => {
+      const Model = models[modelName];
       if (!Model) {
         throw new Error('Cannot record transactions of non-existent model "' + modelName + '"');
       }
 
       // Listen for updates to the model and record all transactions related to it
-      ['created', 'updated', 'destroyed'].forEach(function(operation) {
-        Model.bind(operation, function(event, model) {
-          if (!_this.monitoring) {
+      ['created', 'updated', 'destroyed'].forEach(operation => {
+        Model.bind(operation, (event, model) => {
+          if (!this.monitoring) {
             // Monitoring is disabled, so do not record the transaction
             return;
           }
 
           // An operation has occured on the model, so create a new transaction
           // model instance to represent it and save it to the database
-          var transaction = models.Transaction.createFromEvent(event, model);
+          const transaction = models.Transaction.createFromEvent(event, model);
           transaction.save();
         });
       });
@@ -59,7 +58,7 @@ export default can.Construct.extend('TransactionMonitor', {
    *
    * @returns {Transaction[]}
    */
-  getTransactions: function() {
+  getTransactions() {
     return models.Transaction.list;
   },
 
@@ -76,32 +75,27 @@ export default can.Construct.extend('TransactionMonitor', {
    * @param {Function} sync Communicates with the external transaction store
    * @returns {Deferred}
    */
-  sync: function(sync) {
-    var _this = this;
-    var sentTransactions = can.makeArray(this.getTransactions());
-    return sync(sentTransactions).done(function(receivedTransactions) {
+  sync(sync) {
+    const sentTransactions = can.makeArray(this.getTransactions());
+    return sync(sentTransactions).done(receivedTransactions => {
       // Pause transaction monitoring while applying transactions so that the
       // model changes will not be recorded as new transactions
-      _this.monitoring = false;
+      this.monitoring = false;
 
       // Apply transactions one at a time, starting the next transaction
       // immediately after the previous one finishes
-      var promise = can.Deferred().resolve();
-      receivedTransactions.forEach(function(transaction) {
-        promise = promise.then(function() {
-          return transaction.apply();
-        });
+      let promise = can.Deferred().resolve();
+      receivedTransactions.forEach(transaction => {
+        promise = promise.then(() => transaction.apply());
       });
 
       // Re-enable transaction monitoring after all transactions are applied
-      promise.always(function() {
-        _this.monitoring = true;
+      promise.always(() => {
+        this.monitoring = true;
       });
 
       // Remove all of the transactions that were sent
-      sentTransactions.forEach(function(transaction) {
-        transaction.destroy();
-      });
+      sentTransactions.forEach(transaction => transaction.destroy());
     });
   },
 });
