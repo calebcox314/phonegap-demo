@@ -57,7 +57,7 @@ const HashMap = can.Construct.extend({
 export default HashMap;
 
 // Add the following Map functions to the HashMap
-['clear', 'has', 'keys', 'values', 'entries', 'forEach'].forEach(function(method) {
+['clear', 'has', 'keys', 'values', 'entries', 'forEach'].forEach(method => {
   HashMap.prototype[method] = function() {
     return this.map[method].apply(this.map, arguments);
   };

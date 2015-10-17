@@ -38,11 +38,10 @@ const Page = Control.extend({
   init(element) {
     const routeAttr = this.constructor.routeAttr;
     if (routeAttr) {
-      const _this = this;
-      can.route.bind(routeAttr, function(event, value) {
+      can.route.bind(routeAttr, (event, value) => {
         // Only process if the page is open
-        if (Navigator.getOpenPage() === _this.constructor.pageId) {
-          _this.trigger('route.change', [value]);
+        if (Navigator.getOpenPage() === this.constructor.pageId) {
+          this.trigger('route.change', [value]);
         }
       });
     }

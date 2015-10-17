@@ -44,19 +44,15 @@ export default can.Model.extend('LocalModel', {
   },
 
   findAll(params, success, error) {
-    return db.find(this.getTableData(), params).done(function(models) {
-      // Mark the found models as present in the database
-      models.forEach(function(model) {
-        model.isSaved = true;
-      });
+    // Mark the found models as present in the database
+    return db.find(this.getTableData(), params).done(models => {
+      models.forEach(model => model.isSaved = true);
     }).done(success).fail(error);
   },
 
   findOne(params, success, error) {
-    return db.find(this.getTableData(), params).then(function(rows) {
-      return rows[0] || null;
-    }).done(function(model) {
-      // Mark the found model as present in the database
+    // Mark the found model as present in the database
+    return db.find(this.getTableData(), params).then(rows => rows[0] || null).done(model => {
       if (model) {
         model.isSaved = true;
       }
@@ -65,7 +61,7 @@ export default can.Model.extend('LocalModel', {
 
   create(params, success, error) {
     const primaryKey = this.id;
-    return db.create(this.getTableData(), params).then(function(insertId) {
+    return db.create(this.getTableData(), params).then(insertId => {
       // The object returned here will augment the model's attributes
       const obj = {};
 
@@ -98,10 +94,9 @@ export default can.Model.extend('LocalModel', {
 
   save() {
     // Call the original "save" function
-    const _this = this;
-    return this._super.apply(this, arguments).done(function() {
+    return this._super.apply(this, arguments).done(() => {
       // Mark this model as present in the database
-      _this.isSaved = true;
+      this.isSaved = true;
     });
   },
 

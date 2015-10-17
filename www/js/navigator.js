@@ -13,7 +13,7 @@ import HashMap from './util/HashMap';
 // A private map of all the pages used by the application
 // This hash map is indexed by the "page" property
 // It will be populated through calls to registerPage
-const pageRegistry = new HashMap(function(page) { return page.page; });
+const pageRegistry = new HashMap(page => page.page);
 
 const Navigator = {
   /*
@@ -50,7 +50,7 @@ const Navigator = {
    */
   activate(defaultPage) {
     // Listen for changes to the "page" route attribute
-    can.route.bind('page', function(event, page) {
+    can.route.bind('page', (event, page) => {
       // The route's page has changed, so tell the jQuery Mobile page container widget to load the new page
       $(':mobile-pagecontainer').pagecontainer('change', '#' + page, { changeHash: false });
     });

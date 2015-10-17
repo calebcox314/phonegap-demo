@@ -23,23 +23,19 @@ const app = {
   // Install the application
   install() {
     // Install all models
-    return can.when.apply(can, can.map(Models, function(Model, name) {
-      return Model.install();
-    }));
+    return can.when.apply(can, can.map(Models, (Model, name) => Model.install()));
   },
 
   // Load all models
   loadModels() {
-    return can.when.apply(can, can.map(Models, function(Model, name) {
+    return can.when.apply(can, can.map(Models, (Model, name) => {
       const dfd = Model.findAll({});
       Model.list = new Model.List(dfd);
-      Model.bind('created', function(event, model) {
-        Model.list.push(model);
-      });
+      Model.bind('created', (event, model) => Model.list.push(model));
 
       // HACK: CanJS does not automatically remove destroyed models from the
       // list without this hack
-      Model.list.bind('remove', function() {});
+      Model.list.bind('remove', () => {});
 
       return dfd;
     }));
@@ -48,13 +44,13 @@ const app = {
   // "deviceready" event handler
   onDeviceReady() {
     console.log('Device is ready');
-    app.install().done(function() {
+    app.install().done(() => {
       console.log('Models installed');
-      app.loadModels().done(function() {
+      app.loadModels().done(() => {
         console.log('Models loaded');
 
         // Create all application control instances
-        [Controls.Contacts, Controls.EditContact].forEach(function(Control) {
+        [Controls.Contacts, Controls.EditContact].forEach(Control => {
           const controlName = can.hyphenate(Control.fullName).toLowerCase();
           const control = new Control('[data-control=' + controlName + ']', {}); // jshint ignore:line
         });
@@ -69,10 +65,10 @@ const app = {
         app.transactionMonitor = new TransactionMonitor({ monitoredModels: ['Contact'] });
 
         console.log('Finished initialization');
-      }).fail(function() {
+      }).fail(() => {
         console.error('Failed to load models!');
       });
-    }).fail(function() {
+    }).fail(() => {
       console.error('Failed to install models!');
     });
   },

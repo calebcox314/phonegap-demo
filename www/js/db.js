@@ -26,18 +26,17 @@ const Database = {
 
   install(tableData) {
     const deferred = can.Deferred();
-    const _this = this;
-    this.transaction(function(tx) {
+    this.transaction(tx => {
       const columns = [];
-      can.each(tableData.attributes, function(attributeType, attributeName) {
+      can.each(tableData.attributes, (attributeType, attributeName) => {
         // Convert the generalized type to a SQLite type string
         // The type should consist of multiple pipe-separated segments. The first segment
         // represents the base type (like string, int, or float) and the other segments represent
         // type modifiers (like primarykey or autoincrement)
-        const sqliteType = attributeType.toLowerCase().split('|').map(function(type, index) {
+        const sqliteType = attributeType.toLowerCase().split('|').map((type, index) => {
           if (index === 0) {
             // The first segment represents the base type
-            const baseType = type ? _this.sqliteTypeMap.get(type) : _this.sqliteTypeMap.get('default');
+            const baseType = type ? this.sqliteTypeMap.get(type) : this.sqliteTypeMap.get('default');
             if (!baseType) {
               deferred.reject(new Error('Unrecognized attribute base type "' + type + '"'));
             }
@@ -45,7 +44,7 @@ const Database = {
             return baseType;
           } else {
             // All other segments represent type modifiers
-            const modifier = _this.sqliteModifierMap.get(type);
+            const modifier = this.sqliteModifierMap.get(type);
             if (!modifier) {
               deferred.reject(new Error('Unrecognized attribute type modifier "' + type + '"'));
             }
@@ -61,7 +60,7 @@ const Database = {
         return;
       }
 
-      tx.executeSql('CREATE TABLE IF NOT EXISTS "' + tableData.name + '" (' + columns.join(', ') + ')', [], function(tx, result) {
+      tx.executeSql('CREATE TABLE IF NOT EXISTS "' + tableData.name + '" (' + columns.join(', ') + ')', [], (tx, result) => {
         deferred.resolve(null);
       }, deferred.reject);
     }, deferred.reject);
@@ -70,16 +69,16 @@ const Database = {
 
   find(tableData, query) {
     const deferred = can.Deferred();
-    this.transaction(function(tx) {
+    this.transaction(tx => {
       const values = [];
       const conditions = [];
-      can.each(query || {}, function(value, key) {
+      can.each(query || {}, (value, key) => {
         values.push(value);
         conditions.push('"' + key + '"=?');
       });
 
       const conditionClause = conditions.length ? ' WHERE ' + conditions.join(' AND ') : '';
-      tx.executeSql('SELECT * FROM "' + tableData.name + '"' + conditionClause, values, function(tx, result) {
+      tx.executeSql('SELECT * FROM "' + tableData.name + '"' + conditionClause, values, (tx, result) => {
         const rows = [];
         for (let i = 0; i < result.rows.length; ++i) {
           rows.push(result.rows.item(i));
@@ -93,11 +92,11 @@ const Database = {
 
   create(tableData, attrs) {
     const deferred = can.Deferred();
-    this.transaction(function(tx) {
+    this.transaction(tx => {
       const values = [];
       const fields = [];
       const placeholders = [];
-      can.each(tableData.attributes, function(type, key) {
+      can.each(tableData.attributes, (type, key) => {
         const value = attrs[key];
         if (typeof value === 'undefined') {
           // Skip attributes without a value
@@ -110,7 +109,7 @@ const Database = {
       });
 
       const valuesClause = ' (' + fields.join(',') + ') VALUES (' + placeholders.join(',') + ')';
-      tx.executeSql('INSERT INTO "' + tableData.name + '"' + (fields.length === 0 ? ' DEFAULT VALUES' : valuesClause), values, function(tx, result) {
+      tx.executeSql('INSERT INTO "' + tableData.name + '"' + (fields.length === 0 ? ' DEFAULT VALUES' : valuesClause), values, (tx, result) => {
         deferred.resolve(result.insertId);
       }, deferred.reject);
     }, deferred.reject);
@@ -119,17 +118,17 @@ const Database = {
 
   update(tableData, id, attrs) {
     const deferred = can.Deferred();
-    this.transaction(function(tx) {
+    this.transaction(tx => {
       const values = [];
       const assignments = [];
-      can.each(tableData.attributes, function(type, key) {
+      can.each(tableData.attributes, (type, key) => {
         values.push(attrs[key]);
         assignments.push('"' + key + '"=?');
       });
 
       values.push(id);
       const assignmentsClause = assignments.join(', ');
-      tx.executeSql('UPDATE "' + tableData.name + '" SET ' + assignmentsClause + ' WHERE ' + tableData.primaryKey + '=?', values, function(tx, result) {
+      tx.executeSql('UPDATE "' + tableData.name + '" SET ' + assignmentsClause + ' WHERE ' + tableData.primaryKey + '=?', values, (tx, result) => {
         deferred.resolve(null);
       }, deferred.reject);
     }, deferred.reject);
@@ -138,8 +137,8 @@ const Database = {
 
   destroy(tableData, id) {
     const deferred = can.Deferred();
-    this.transaction(function(tx) {
-      tx.executeSql('DELETE FROM "' + tableData.name + '" WHERE "' + tableData.primaryKey + '"=?', [id], function(tx, result) {
+    this.transaction(tx => {
+      tx.executeSql('DELETE FROM "' + tableData.name + '" WHERE "' + tableData.primaryKey + '"=?', [id], (tx, result) => {
         deferred.resolve(null);
       }, deferred.reject);
     }, deferred.reject);

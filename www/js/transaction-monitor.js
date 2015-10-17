@@ -29,18 +29,17 @@ export default can.Construct.extend('TransactionMonitor', {
   init(options) {
     this.monitoring = true;
 
-    const _this = this;
     this.monitoredModels = new Set(options.monitoredModels);
-    this.monitoredModels.forEach(function(modelName) {
+    this.monitoredModels.forEach(modelName => {
       const Model = models[modelName];
       if (!Model) {
         throw new Error('Cannot record transactions of non-existent model "' + modelName + '"');
       }
 
       // Listen for updates to the model and record all transactions related to it
-      ['created', 'updated', 'destroyed'].forEach(function(operation) {
-        Model.bind(operation, function(event, model) {
-          if (!_this.monitoring) {
+      ['created', 'updated', 'destroyed'].forEach(operation => {
+        Model.bind(operation, (event, model) => {
+          if (!this.monitoring) {
             // Monitoring is disabled, so do not record the transaction
             return;
           }
@@ -77,31 +76,26 @@ export default can.Construct.extend('TransactionMonitor', {
    * @returns {Deferred}
    */
   sync(sync) {
-    const _this = this;
     const sentTransactions = can.makeArray(this.getTransactions());
-    return sync(sentTransactions).done(function(receivedTransactions) {
+    return sync(sentTransactions).done(receivedTransactions => {
       // Pause transaction monitoring while applying transactions so that the
       // model changes will not be recorded as new transactions
-      _this.monitoring = false;
+      this.monitoring = false;
 
       // Apply transactions one at a time, starting the next transaction
       // immediately after the previous one finishes
       let promise = can.Deferred().resolve();
-      receivedTransactions.forEach(function(transaction) {
-        promise = promise.then(function() {
-          return transaction.apply();
-        });
+      receivedTransactions.forEach(transaction => {
+        promise = promise.then(() => transaction.apply());
       });
 
       // Re-enable transaction monitoring after all transactions are applied
-      promise.always(function() {
-        _this.monitoring = true;
+      promise.always(() => {
+        this.monitoring = true;
       });
 
       // Remove all of the transactions that were sent
-      sentTransactions.forEach(function(transaction) {
-        transaction.destroy();
-      });
+      sentTransactions.forEach(transaction => transaction.destroy());
     });
   },
 });

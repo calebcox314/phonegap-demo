@@ -63,16 +63,14 @@ export default Page.extend('Contacts', {
   '.purge click'() {
     // Delete all contacts in series
     let promise = can.Deferred().resolve();
-    this.contacts.forEach(function(contact) {
-      promise = promise.then(function() {
-        return contact.destroy();
-      });
+    this.contacts.forEach(contact => {
+      promise = promise.then(() => contact.destroy());
     });
   },
 
   '.sync click'() {
     // Send the current transactions to the server
-    app.transactionMonitor.sync(function(transactions) {
+    app.transactionMonitor.sync(transactions => {
       return $.ajax('https://phonegap-demo.herokuapp.com/sync', {
         method: 'POST',
         headers: {
@@ -80,15 +78,13 @@ export default Page.extend('Contacts', {
         },
         data: JSON.stringify({
           lastSyncTimestamp: window.localStorage.getItem('lastSyncTimestamp'),
-          transactionLog: transactions.map(function(transaction) {
-            return transaction.serialize();
-          }),
+          transactionLog: transactions.map(transaction => transaction.serialize()),
         }),
-      }).then(function(response) {
+      }).then(response => {
         window.localStorage.setItem('lastSyncTimestamp', response.data.lastSyncTimestamp);
         return models.Transaction.models(response.data.transactionLog);
       });
-    }).fail(function(err) {
+    }).fail(err => {
       console.error('Sync failed!');
       console.log(err);
     });
