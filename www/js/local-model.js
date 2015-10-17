@@ -12,7 +12,7 @@ const chance = new Chance();
 import db from './db';
 
 export default can.Model.extend('LocalModel', {
-  extend: function(name, staticProps, protoProps) {
+  extend(name, staticProps, protoProps) {
     // Ignore the isSaved property when serializing
     can.extend(true, protoProps, {
       define: {
@@ -26,7 +26,7 @@ export default can.Model.extend('LocalModel', {
     if (Model.hasUuid) {
       // For models with a UUID field, the primary key defaults to an automatically generated UUID
       Object.defineProperty(Model.defaults, Model.id, {
-        get: function() {
+        get() {
           // Generate a new UUID
           return chance.guid();
         },
@@ -38,12 +38,12 @@ export default can.Model.extend('LocalModel', {
     return Model;
   },
 
-  install: function(success, error) {
+  install(success, error) {
     // Install this model in the database
     return db.install(this.getTableData()).done(success).fail(error);
   },
 
-  findAll: function(params, success, error) {
+  findAll(params, success, error) {
     return db.find(this.getTableData(), params).done(function(models) {
       // Mark the found models as present in the database
       models.forEach(function(model) {
@@ -52,7 +52,7 @@ export default can.Model.extend('LocalModel', {
     }).done(success).fail(error);
   },
 
-  findOne: function(params, success, error) {
+  findOne(params, success, error) {
     return db.find(this.getTableData(), params).then(function(rows) {
       return rows[0] || null;
     }).done(function(model) {
@@ -63,7 +63,7 @@ export default can.Model.extend('LocalModel', {
     }).done(success).fail(error);
   },
 
-  create: function(params, success, error) {
+  create(params, success, error) {
     const primaryKey = this.id;
     return db.create(this.getTableData(), params).then(function(insertId) {
       // The object returned here will augment the model's attributes
@@ -78,15 +78,15 @@ export default can.Model.extend('LocalModel', {
     }).done(success).fail(error);
   },
 
-  update: function(id, params, success, error) {
+  update(id, params, success, error) {
     return db.update(this.getTableData(), id, params).done(success).fail(error);
   },
 
-  destroy: function(id, params, success, error) {
+  destroy(id, params, success, error) {
     return db.destroy(this.getTableData(), id).done(success).fail(error);
   },
 
-  getTableData: function() {
+  getTableData() {
     return {
       name: this._fullName,
       primaryKey: this.id,
@@ -96,7 +96,7 @@ export default can.Model.extend('LocalModel', {
 }, {
   isSaved: false,
 
-  save: function() {
+  save() {
     // Call the original "save" function
     const _this = this;
     return this._super.apply(this, arguments).done(function() {
@@ -113,7 +113,7 @@ export default can.Model.extend('LocalModel', {
   // on every model read from the database via findOne and findAll. Also, calls to "save" also set
   // this flag to true. "isNew" then calculates whether the model has been saved or not by simply
   // checking the "isSaved" flag.
-  isNew: function() {
+  isNew() {
     return !this.isSaved;
   },
 });

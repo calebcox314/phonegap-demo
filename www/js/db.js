@@ -19,12 +19,12 @@ const Database = {
     ['notnull', 'NOT NULL'],
   ]),
 
-  init: function() {
+  init() {
     const openDatabase = cordova.platformId === 'browser' ? window.openDatabase : window.sqlitePlugin.openDatabase;
     this.db = openDatabase('db.sqlite', '1.0', 'Database', -1);
   },
 
-  install: function(tableData) {
+  install(tableData) {
     const deferred = can.Deferred();
     const _this = this;
     this.transaction(function(tx) {
@@ -68,7 +68,7 @@ const Database = {
     return deferred;
   },
 
-  find: function(tableData, query) {
+  find(tableData, query) {
     const deferred = can.Deferred();
     this.transaction(function(tx) {
       const values = [];
@@ -91,7 +91,7 @@ const Database = {
     return deferred;
   },
 
-  create: function(tableData, attrs) {
+  create(tableData, attrs) {
     const deferred = can.Deferred();
     this.transaction(function(tx) {
       const values = [];
@@ -117,7 +117,7 @@ const Database = {
     return deferred;
   },
 
-  update: function(tableData, id, attrs) {
+  update(tableData, id, attrs) {
     const deferred = can.Deferred();
     this.transaction(function(tx) {
       const values = [];
@@ -136,7 +136,7 @@ const Database = {
     return deferred;
   },
 
-  destroy: function(tableData, id) {
+  destroy(tableData, id) {
     const deferred = can.Deferred();
     this.transaction(function(tx) {
       tx.executeSql('DELETE FROM "' + tableData.name + '" WHERE "' + tableData.primaryKey + '"=?', [id], function(tx, result) {
@@ -146,7 +146,7 @@ const Database = {
     return deferred;
   },
 
-  transaction: function(callback) {
+  transaction(callback) {
     return this.db.transaction(callback);
   },
 };

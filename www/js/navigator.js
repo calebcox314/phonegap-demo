@@ -23,7 +23,7 @@ const Navigator = {
    * @param {string|null} parent The page's parent's id or null if it is a root page
    * @param {string|null} [pattern] The page's route pattern or null to use the page id
    */
-  registerPage: function(page, parent, pattern) {
+  registerPage(page, parent, pattern) {
     // The relative pattern defaults to the page id
     const relativePattern = pattern || page;
 
@@ -48,7 +48,7 @@ const Navigator = {
    *
    * @param {string} [defaultPage] The page to navigate to if the current URL does not specify an initial page.
    */
-  activate: function(defaultPage) {
+  activate(defaultPage) {
     // Listen for changes to the "page" route attribute
     can.route.bind('page', function(event, page) {
       // The route's page has changed, so tell the jQuery Mobile page container widget to load the new page
@@ -73,7 +73,7 @@ const Navigator = {
    * @param {string} page The page to navigate to.
    * @param {object} [routeData] The can.route attributes associated with the page.
    */
-  openPage: function(page, routeData) {
+  openPage(page, routeData) {
     // Merge the page into the route attributes
     const routeAttrs = can.extend({
       page: page,
@@ -87,7 +87,7 @@ const Navigator = {
   /*
    * Navigate to the current page's parent.
    */
-  openParentPage: function() {
+  openParentPage() {
     const currentPage = pageRegistry.getByKey(this.getOpenPage());
     this.openPage(currentPage.parent);
   },
@@ -97,7 +97,7 @@ const Navigator = {
    *
    * @returns {string}
    */
-  getOpenPage: function() {
+  getOpenPage() {
     return can.route.attr('page');
   },
 };

@@ -35,7 +35,7 @@ const Transaction = LocalModel.extend('Transaction', {
    * @param {model} model The modified model
    * @returns {Transaction}
    */
-  createFromEvent: function(event, model) {
+  createFromEvent(event, model) {
     return new Transaction({
       modelName: model.constructor.shortName,
       operation: operationMap.get(event.type),
@@ -48,12 +48,12 @@ const Transaction = LocalModel.extend('Transaction', {
     // be serialized in the database as a string
     params: {
       // Convert the params attribute into its serialized form
-      serialize: function(value) {
+      serialize(value) {
         return JSON.stringify(value);
       },
 
       // Convert the params attribute from its serialized form
-      type: function(raw) {
+      type(raw) {
         if (typeof raw === 'string') {
           try {
             return JSON.parse(raw);
@@ -72,7 +72,7 @@ const Transaction = LocalModel.extend('Transaction', {
    *
    * @returns {Deferred}
    */
-  apply: function() {
+  apply() {
     const dfd = can.Deferred();
 
     const modelName = this.attr('modelName');

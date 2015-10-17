@@ -15,13 +15,13 @@ import TransactionMonitor from './transaction-monitor';
 
 const app = {
   // Initialize the applications
-  initialize: function() {
+  initialize() {
     // Bind to startup events
     document.addEventListener('deviceready', this.onDeviceReady, false);
   },
 
   // Install the application
-  install: function() {
+  install() {
     // Install all models
     return can.when.apply(can, can.map(Models, function(Model, name) {
       return Model.install();
@@ -29,7 +29,7 @@ const app = {
   },
 
   // Load all models
-  loadModels: function() {
+  loadModels() {
     return can.when.apply(can, can.map(Models, function(Model, name) {
       const dfd = Model.findAll({});
       Model.list = new Model.List(dfd);
@@ -46,7 +46,7 @@ const app = {
   },
 
   // "deviceready" event handler
-  onDeviceReady: function() {
+  onDeviceReady() {
     console.log('Device is ready');
     app.install().done(function() {
       console.log('Models installed');

@@ -26,7 +26,7 @@ export default can.Construct.extend('TransactionMonitor', {
    * @param {Object} options A configuration hash
    * @param {string} options.monitoredModels[] The names of the models to monitor transactions on
    */
-  init: function(options) {
+  init(options) {
     this.monitoring = true;
 
     const _this = this;
@@ -59,7 +59,7 @@ export default can.Construct.extend('TransactionMonitor', {
    *
    * @returns {Transaction[]}
    */
-  getTransactions: function() {
+  getTransactions() {
     return models.Transaction.list;
   },
 
@@ -76,7 +76,7 @@ export default can.Construct.extend('TransactionMonitor', {
    * @param {Function} sync Communicates with the external transaction store
    * @returns {Deferred}
    */
-  sync: function(sync) {
+  sync(sync) {
     const _this = this;
     const sentTransactions = can.makeArray(this.getTransactions());
     return sync(sentTransactions).done(function(receivedTransactions) {

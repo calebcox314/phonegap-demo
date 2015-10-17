@@ -27,7 +27,7 @@ const Page = Control.extend({
   routeAttr: null,
 
   // Register derived page controls with the Navigator component
-  extend: function() {
+  extend() {
     // Call the original extend function
     const PageControl = this._super.apply(this, arguments);
     Navigator.registerPage(PageControl.pageId, PageControl.parentId, PageControl.routeAttr ? ':' + PageControl.routeAttr : null);
@@ -35,7 +35,7 @@ const Page = Control.extend({
   },
 }, {
   // Initialize the control
-  init: function(element) {
+  init(element) {
     const routeAttr = this.constructor.routeAttr;
     if (routeAttr) {
       const _this = this;

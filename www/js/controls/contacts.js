@@ -16,7 +16,7 @@ export default Page.extend('Contacts', {
   template: 'template-contacts',
 }, {
   // Initialize the control
-  init: function(element) {
+  init(element) {
     // Call the Page constructor
     this._super.apply(this, arguments);
 
@@ -41,14 +41,14 @@ export default Page.extend('Contacts', {
   /*
    * Respond to control events.
    */
-  '.create click': function() {
+  '.create click'() {
     // Open a new contact for editing
     Navigator.openPage('contact', {
       contactId: 'new',
     });
   },
 
-  '.generate click': function() {
+  '.generate click'() {
     // Generate a new contact with randomly generated data
     const nameParts = chance.name().split(' ');
     const contact = new models.Contact({
@@ -60,7 +60,7 @@ export default Page.extend('Contacts', {
     contact.save();
   },
 
-  '.purge click': function() {
+  '.purge click'() {
     // Delete all contacts in series
     let promise = can.Deferred().resolve();
     this.contacts.forEach(function(contact) {
@@ -70,7 +70,7 @@ export default Page.extend('Contacts', {
     });
   },
 
-  '.sync click': function() {
+  '.sync click'() {
     // Send the current transactions to the server
     app.transactionMonitor.sync(function(transactions) {
       return $.ajax('https://phonegap-demo.herokuapp.com/sync', {
@@ -94,7 +94,7 @@ export default Page.extend('Contacts', {
     });
   },
 
-  '.contact click': function(element) {
+  '.contact click'(element) {
     // The contact's id is stored in the data-id attribute on the .contact element
     const contactId = $(element).data('id');
 
@@ -109,7 +109,7 @@ export default Page.extend('Contacts', {
    *
    * This must be called to update the UI whenever items are added to the listview.
    */
-  refresh: function() {
+  refresh() {
     this.$listview.listview('refresh');
   },
 });
