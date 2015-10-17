@@ -1,6 +1,7 @@
 phonegap-demo
 =============
 
+[![devDependency Status](https://david-dm.org/canac/phonegap-demo/dev-status.svg)](https://david-dm.org/canac/phonegap-demo#info=devDependencies)
 [![Code Climate](https://codeclimate.com/github/canac/phonegap-demo/badges/gpa.svg)](https://codeclimate.com/github/canac/phonegap-demo)
 
 PhoneGap local storage demonstration app
