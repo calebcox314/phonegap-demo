@@ -11,7 +11,7 @@ export default Page.extend('EditContact', {
   pageId: 'contact',
   parentId: 'contacts',
   routeAttr: 'contactId',
-  template: 'template-contact',
+  template: 'templates/contact.html',
 }, {
   // Initialize the control
   init(element) {

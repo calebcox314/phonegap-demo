@@ -1,0 +1,10 @@
+<ul data-role="listview" class="ui-listview" style="margin-bottom: 2em;">
+  <li data-role="list-divider" role="heading">Contacts</li>
+  {{#each contacts}}
+  <li class="contact" data-id="{{contactId}}"><a>{{name}}</a></li>
+  {{/each}}
+</ul>
+<button class="ui-btn ui-corner-all create">Create</button>
+<button class="ui-btn ui-corner-all generate">Generate</button>
+<button class="ui-btn ui-corner-all purge">Purge</button>
+<button class="ui-btn ui-corner-all sync">Sync</button>

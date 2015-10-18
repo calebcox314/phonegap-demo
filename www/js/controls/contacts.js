@@ -13,7 +13,7 @@ const chance = new Chance();
 
 export default Page.extend('Contacts', {
   pageId: 'contacts',
-  template: 'template-contacts',
+  template: 'templates/contacts.html',
 }, {
   // Initialize the control
   init(element) {
