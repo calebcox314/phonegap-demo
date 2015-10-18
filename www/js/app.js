@@ -83,7 +83,7 @@ const app = {
       // Create all application control instances
       can.each(Controls, Control => {
         const controlName = can.hyphenate(Control.fullName).toLowerCase();
-        const control = new Control('[data-control=' + controlName + ']', {}); // jshint ignore:line
+        const control = new Control(`[data-control=${controlName}]`, {}); // jshint ignore:line
       });
 
       // Initialize the jQuery Mobile widgets

@@ -38,7 +38,7 @@ const Database = {
             // The first segment represents the base type
             const baseType = type ? this.sqliteTypeMap.get(type) : this.sqliteTypeMap.get('default');
             if (!baseType) {
-              deferred.reject(new Error('Unrecognized attribute base type "' + type + '"'));
+              deferred.reject(new Error(`Unrecognized attribute base type "${type}"`));
             }
 
             return baseType;
@@ -46,13 +46,13 @@ const Database = {
             // All other segments represent type modifiers
             const modifier = this.sqliteModifierMap.get(type);
             if (!modifier) {
-              deferred.reject(new Error('Unrecognized attribute type modifier "' + type + '"'));
+              deferred.reject(new Error(`Unrecognized attribute type modifier "${type}"`));
             }
 
             return modifier;
           }
         }).join(' ');
-        columns.push('"' + attributeName + '" ' + sqliteType);
+        columns.push(`"${attributeName}" ${sqliteType}`);
       });
 
       if (deferred.state() === 'rejected') {
@@ -60,7 +60,7 @@ const Database = {
         return;
       }
 
-      tx.executeSql('CREATE TABLE IF NOT EXISTS "' + tableData.name + '" (' + columns.join(', ') + ')', [], (tx, result) => {
+      tx.executeSql(`CREATE TABLE IF NOT EXISTS "${tableData.name}" (${columns.join(', ')})`, [], (tx, result) => {
         deferred.resolve(null);
       }, deferred.reject);
     }, deferred.reject);
@@ -74,11 +74,11 @@ const Database = {
       const conditions = [];
       can.each(query || {}, (value, key) => {
         values.push(value);
-        conditions.push('"' + key + '"=?');
+        conditions.push(`"${key}"=?`);
       });
 
-      const conditionClause = conditions.length ? ' WHERE ' + conditions.join(' AND ') : '';
-      tx.executeSql('SELECT * FROM "' + tableData.name + '"' + conditionClause, values, (tx, result) => {
+      const conditionClause = conditions.length === 0 ? '' : ` WHERE ${conditions.join(' AND ')}`;
+      tx.executeSql(`SELECT * FROM "${tableData.name}"${conditionClause}`, values, (tx, result) => {
         const rows = [];
         for (let i = 0; i < result.rows.length; ++i) {
           rows.push(result.rows.item(i));
@@ -104,12 +104,12 @@ const Database = {
         }
 
         values.push(value);
-        fields.push('"' + key + '"');
+        fields.push(`"${key}"`);
         placeholders.push('?');
       });
 
-      const valuesClause = ' (' + fields.join(',') + ') VALUES (' + placeholders.join(',') + ')';
-      tx.executeSql('INSERT INTO "' + tableData.name + '"' + (fields.length === 0 ? ' DEFAULT VALUES' : valuesClause), values, (tx, result) => {
+      const valuesClause = fields.length === 0 ? 'DEFAULT VALUES' : `(${fields.join(',')}) VALUES (${placeholders.join(',')})`;
+      tx.executeSql(`INSERT INTO "${tableData.name}" ${valuesClause}`, values, (tx, result) => {
         deferred.resolve(result.insertId);
       }, deferred.reject);
     }, deferred.reject);
@@ -123,12 +123,12 @@ const Database = {
       const assignments = [];
       can.each(tableData.attributes, (type, key) => {
         values.push(attrs[key]);
-        assignments.push('"' + key + '"=?');
+        assignments.push(`"${key}"=?`);
       });
 
       values.push(id);
       const assignmentsClause = assignments.join(', ');
-      tx.executeSql('UPDATE "' + tableData.name + '" SET ' + assignmentsClause + ' WHERE ' + tableData.primaryKey + '=?', values, (tx, result) => {
+      tx.executeSql(`UPDATE "${tableData.name}" SET ${assignmentsClause} WHERE ${tableData.primaryKey}=?`, values, (tx, result) => {
         deferred.resolve(null);
       }, deferred.reject);
     }, deferred.reject);
@@ -138,7 +138,7 @@ const Database = {
   destroy(tableData, id) {
     const deferred = can.Deferred();
     this.transaction(tx => {
-      tx.executeSql('DELETE FROM "' + tableData.name + '" WHERE "' + tableData.primaryKey + '"=?', [id], (tx, result) => {
+      tx.executeSql(`DELETE FROM "${tableData.name}" WHERE "${tableData.primaryKey}"=?`, [id], (tx, result) => {
         deferred.resolve(null);
       }, deferred.reject);
     }, deferred.reject);

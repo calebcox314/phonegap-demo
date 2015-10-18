@@ -78,7 +78,7 @@ const Transaction = LocalModel.extend('Transaction', {
     const modelName = this.attr('modelName');
     const Model = models[modelName];
     if (!Model) {
-      return dfd.reject(new Error('Cannot apply transaction to non-existent model "' + this.attr('modelName') + '"')).promise();
+      return dfd.reject(new Error(`Cannot apply transaction to non-existent model "${this.attr('modelName')}"`)).promise();
     }
 
     const attrs = this.attr('params');
@@ -92,7 +92,7 @@ const Transaction = LocalModel.extend('Transaction', {
         model = new Model(attrs);
         return model.save();
       } else {
-        console.warn('Cannot create existing model with id ' + id);
+        console.warn(`Cannot create existing model with id ${id}`);
         dfd.resolve();
       }
     } else if (operation === 'update') {
@@ -101,7 +101,7 @@ const Transaction = LocalModel.extend('Transaction', {
         model.attr(attrs);
         return model.save();
       } else {
-        console.warn('Cannot update non-existent model with id ' + id);
+        console.warn(`Cannot update non-existent model with id ${id}`);
         dfd.resolve();
       }
     } else if (operation === 'destroy') {
@@ -109,11 +109,11 @@ const Transaction = LocalModel.extend('Transaction', {
       if (model) {
         return model.destroy();
       } else {
-        console.warn('Cannot destroy non-existent model with id ' + id);
+        console.warn(`Cannot destroy non-existent model with id ${id}`);
         dfd.resolve();
       }
     } else {
-      return dfd.reject(new Error('Cannot apply transaction with unrecognized operation "' + operation + '"'));
+      return dfd.reject(new Error(`Cannot apply transaction with unrecognized operation "${operation}"`));
     }
 
     return dfd.promise();

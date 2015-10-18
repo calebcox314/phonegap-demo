@@ -33,7 +33,7 @@ export default can.Construct.extend('TransactionMonitor', {
     this.monitoredModels.forEach(modelName => {
       const Model = models[modelName];
       if (!Model) {
-        throw new Error('Cannot record transactions of non-existent model "' + modelName + '"');
+        throw new Error(`Cannot record transactions of non-existent model "${modelName}"`);
       }
 
       // Listen for updates to the model and record all transactions related to it

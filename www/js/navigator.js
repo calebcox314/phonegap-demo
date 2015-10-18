@@ -28,7 +28,7 @@ const Navigator = {
     const relativePattern = pattern || page;
 
     // The absolute pattern is produced by prefixing the relative pattern with the parent's absolute pattern
-    const absolutePattern = parent === null ? relativePattern : pageRegistry.getByKey(parent).pattern + '/' + relativePattern;
+    const absolutePattern = parent === null ? relativePattern : `${pageRegistry.getByKey(parent).pattern}/${relativePattern}`;
 
     // Store the new page in the page registry
     pageRegistry.add({
@@ -52,7 +52,7 @@ const Navigator = {
     // Listen for changes to the "page" route attribute
     can.route.bind('page', (event, page) => {
       // The route's page has changed, so tell the jQuery Mobile page container widget to load the new page
-      $(':mobile-pagecontainer').pagecontainer('change', '#' + page, { changeHash: false });
+      $(':mobile-pagecontainer').pagecontainer('change', `#${page}`, { changeHash: false });
     });
 
     // Initialize the can.route data attributes

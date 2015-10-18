@@ -55,7 +55,7 @@ export default Page.extend('Contacts', {
     const contact = new Contact({
       firstName: nameParts[0],
       lastName: nameParts[1],
-      emailAddress: nameParts.join('.').toLowerCase() + '@gmail.com',
+      emailAddress: `${nameParts.join('.').toLowerCase()}@gmail.com`,
       phoneNumber: chance.phone(),
     });
     contact.save();

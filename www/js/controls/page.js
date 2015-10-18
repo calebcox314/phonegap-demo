@@ -30,7 +30,7 @@ const Page = Control.extend({
   extend() {
     // Call the original extend function
     const PageControl = this._super(...arguments);
-    Navigator.registerPage(PageControl.pageId, PageControl.parentId, PageControl.routeAttr ? ':' + PageControl.routeAttr : null);
+    Navigator.registerPage(PageControl.pageId, PageControl.parentId, PageControl.routeAttr ? `:${PageControl.routeAttr}` : null);
     return PageControl;
   },
 }, {

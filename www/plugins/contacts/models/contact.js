@@ -22,6 +22,6 @@ export default LocalModel.extend('Contact', {
   monitorTransactions: true,
 }, {
   name: can.compute(function() {
-    return this.attr('firstName') + ' ' + this.attr('lastName');
+    return `${this.attr('firstName')} ${this.attr('lastName')}`;
   }),
 });
