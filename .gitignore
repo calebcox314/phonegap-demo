@@ -1,4 +1,7 @@
+# Ignore directories created by package managers wherever they appear
+bower_components/
 node_modules/
-platforms/
-plugins/
-www/bower_components/
+
+# Ignore PhoneGap build directories in the root directory
+/platforms/
+/plugins/
