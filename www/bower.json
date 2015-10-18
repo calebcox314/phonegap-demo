@@ -15,7 +15,8 @@
       "jquery-mobile"
     ],
     "map": {
-      "can": "bower_components/canjs/amd/can"
+      "can": "bower_components/canjs/amd/can",
+      "core": "js"
     },
     "paths": {
       "es6-collections": "bower_components/es6-collections/index.js",

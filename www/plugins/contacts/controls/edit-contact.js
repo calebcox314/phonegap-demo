@@ -3,15 +3,15 @@
 // Load the control's parent
 import './contacts';
 
-import Page from './page';
-import Navigator from '../navigator';
-import models from '../models';
+import Page from 'core/controls/page';
+import Navigator from 'core/navigator';
+import Contact from '../models/contact';
 
 export default Page.extend('EditContact', {
   pageId: 'contact',
   parentId: 'contacts',
   routeAttr: 'contactId',
-  template: 'templates/contact.html',
+  template: 'plugins/contacts/templates/contact.html',
 }, {
   // Initialize the control
   init(element) {
@@ -79,10 +79,10 @@ export default Page.extend('EditContact', {
     let contact = null;
     if (contactId === 'new') {
       // Create a new contact to edit
-      contact = new models.Contact();
+      contact = new Contact();
     } else {
       // Lookup the contact in the global list by its contact
-      contact = models.Contact.store[contactId];
+      contact = Contact.store[contactId];
       if (contact) {
         // Save a copy of the contact's attributes so that it can be reverted later if necessary
         contact.backup();

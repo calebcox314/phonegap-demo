@@ -1,9 +1,16 @@
 'use strict';
 
-// Load CanJS backup plugin
-import 'can/map/backup';
+const Models = {};
 
-import Contact from './models/contact';
+export default Models;
+
+// Add a new model to the list
+export function register(Model) {
+  const name = Model.fullName;
+  console.log(`Registered model ${name}`);
+  Models[name] = Model;
+}
+
+// Register core models
 import Transaction from './models/transaction';
-
-export default { Contact, Transaction };
+register(Transaction);

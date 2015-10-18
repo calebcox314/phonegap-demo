@@ -1,7 +1,7 @@
 'use strict';
 
 import can from 'can';
-import LocalModel from '../local-model';
+import LocalModel from 'core/local-model';
 
 export default LocalModel.extend('Contact', {
   id: 'contactId',

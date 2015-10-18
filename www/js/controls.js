@@ -1,6 +1,12 @@
 'use strict';
 
-import Contacts from './controls/contacts';
-import EditContact from './controls/edit-contact';
+const Controls = {};
 
-export default { Contacts, EditContact };
+export default Controls;
+
+// Add a new control to the list
+export function register(Control) {
+  const name = Control.fullName;
+  console.log(`Registered control ${name}`);
+  Controls[name] = Control;
+}

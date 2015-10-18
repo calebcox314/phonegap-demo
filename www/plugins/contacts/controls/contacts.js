@@ -2,10 +2,11 @@
 
 import $ from 'jquery';
 import can from 'can';
-import app from '../app';
-import Page from './page';
-import Navigator from '../navigator';
-import models from '../models';
+import app from 'core/app';
+import Page from 'core/controls/page';
+import Navigator from 'core/navigator';
+import Transaction from 'core/models/transaction';
+import Contact from '../models/contact';
 
 // Load the ChanceJS library and instantiate a new chance generator instance
 import Chance from 'chance';
@@ -13,7 +14,7 @@ const chance = new Chance();
 
 export default Page.extend('Contacts', {
   pageId: 'contacts',
-  template: 'templates/contacts.html',
+  template: 'plugins/contacts/templates/contacts.html',
 }, {
   // Initialize the control
   init(element) {
@@ -21,7 +22,7 @@ export default Page.extend('Contacts', {
     this._super(...arguments);
 
     // Get the global list of all contact models
-    const contacts = this.contacts = models.Contact.list;
+    const contacts = this.contacts = Contact.list;
 
     // Initialize the control scope and render it
     this.scope.attr('contacts', contacts);
@@ -51,7 +52,7 @@ export default Page.extend('Contacts', {
   '.generate click'() {
     // Generate a new contact with randomly generated data
     const nameParts = chance.name().split(' ');
-    const contact = new models.Contact({
+    const contact = new Contact({
       firstName: nameParts[0],
       lastName: nameParts[1],
       emailAddress: nameParts.join('.').toLowerCase() + '@gmail.com',
@@ -82,7 +83,7 @@ export default Page.extend('Contacts', {
         }),
       }).then(response => {
         window.localStorage.setItem('lastSyncTimestamp', response.data.lastSyncTimestamp);
-        return models.Transaction.models(response.data.transactionLog);
+        return Transaction.models(response.data.transactionLog);
       });
     }).fail(err => {
       console.error('Sync failed!');
