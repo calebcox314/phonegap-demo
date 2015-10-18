@@ -19,6 +19,7 @@ export default LocalModel.extend('Contact', {
     emailAddress: null,
     phoneNumber: null,
   },
+  monitorTransactions: true,
 }, {
   name: can.compute(function() {
     return this.attr('firstName') + ' ' + this.attr('lastName');

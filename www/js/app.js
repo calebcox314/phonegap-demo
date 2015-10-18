@@ -50,7 +50,7 @@ const app = {
         console.log('Models loaded');
 
         // Create all application control instances
-        [Controls.Contacts, Controls.EditContact].forEach(Control => {
+        can.each(Controls, Control => {
           const controlName = can.hyphenate(Control.fullName).toLowerCase();
           const control = new Control('[data-control=' + controlName + ']', {}); // jshint ignore:line
         });
@@ -62,8 +62,13 @@ const app = {
         Navigator.activate('contacts');
 
         // Initialize the transaction monitor
-        app.transactionMonitor = new TransactionMonitor({ monitoredModels: ['Contact'] });
-
+        const monitoredModels = [];
+        can.each(Models, Model => {
+          if (Model.monitorTransactions) {
+            monitoredModels.push(Model.fullName);
+          }
+        });
+        app.transactionMonitor = new TransactionMonitor({ monitoredModels });
         console.log('Finished initialization');
       }).fail(() => {
         console.error('Failed to load models!');
