@@ -80,10 +80,10 @@ const app = {
     }).then(() => {
       console.log('Models loaded');
 
-      // Create all application control instances
+      // Turn all placeholder elements with a "data-control" attribute that matches a control id
+      // into an instance of that control type
       can.each(Controls, Control => {
-        const controlName = can.hyphenate(Control.fullName).toLowerCase();
-        const control = new Control(`[data-control=${controlName}]`, {}); // jshint ignore:line
+        const control = new Control(`[data-control=${Control.controlId}]`, {}); // jshint ignore:line
       });
 
       // Initialize the jQuery Mobile widgets

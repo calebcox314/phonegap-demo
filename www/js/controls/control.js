@@ -12,6 +12,10 @@ export default can.Control.extend({
   // The unique id of the template used to render the control
   // It should always be overriden in derived controls
   template: null,
+
+  init() {
+    this.controlId = this.prototype.controlId = can.hyphenate(this.fullName).toLowerCase();
+  },
 }, {
   init(element) {
     // This data will be available to the template

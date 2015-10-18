@@ -8,6 +8,7 @@
  * constructor to an attribute name and listen to "route.change" events on the Page control instance.
  */
 
+import $ from 'jquery';
 import can from 'can';
 import 'can/event';
 import Navigator from '../navigator';
@@ -31,6 +32,15 @@ const Page = Control.extend({
     // Call the original extend function
     const PageControl = this._super(...arguments);
     Navigator.registerPage(PageControl.pageId, PageControl.parentId, PageControl.routeAttr ? `:${PageControl.routeAttr}` : null);
+
+    // Add the page placeholder to the root level of the document where jQuery Mobile will recognize it
+    const $control = $('<div>').attr({
+      id: PageControl.pageId,
+      'data-role': 'page',
+      'data-control': PageControl.controlId,
+    });
+    $(document.body).append($control);
+
     return PageControl;
   },
 }, {
